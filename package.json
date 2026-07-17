@@ -1,0 +1,41 @@
+{
+  "name": "origin-graph",
+  "version": "0.1.0",
+  "private": true,
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "db:migrate": "tsx scripts/migrate.ts up",
+    "db:rollback": "tsx scripts/migrate.ts down",
+    "db:seed": "tsx scripts/seed.ts",
+    "db:counts": "tsx scripts/counts.ts",
+    "proof:screenshots": "tsx scripts/capture-proof.ts"
+  },
+  "dependencies": {
+    "next": "16.2.10",
+    "pg": "8.22.0",
+    "react": "19.2.0",
+    "react-dom": "19.2.0",
+    "zod": "4.1.12"
+  },
+  "devDependencies": {
+    "@types/node": "^24.10.0",
+    "@types/pg": "^8.15.6",
+    "@types/react": "^19.2.2",
+    "@types/react-dom": "^19.2.2",
+    "playwright": "^1.61.1",
+    "tsx": "^4.20.6",
+    "typescript": "^5.9.3",
+    "vitest": "4.1.10"
+  },
+  "overrides": {
+    "postcss": "8.5.10"
+  }
+}

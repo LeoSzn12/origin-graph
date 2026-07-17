@@ -1,0 +1,12 @@
+DROP VIEW IF EXISTS admin_table_counts;
+DROP VIEW IF EXISTS source_versions;
+DROP TRIGGER IF EXISTS audit_events_append_only ON audit_events;
+DROP FUNCTION IF EXISTS protect_audit_events();
+DROP TRIGGER IF EXISTS connections_publication_guard ON connections;
+DROP FUNCTION IF EXISTS enforce_connection_publication();
+DROP TRIGGER IF EXISTS claims_publication_guard ON claims;
+DROP FUNCTION IF EXISTS enforce_claim_publication();
+DROP TRIGGER IF EXISTS source_editions_publication_guard ON source_editions;
+DROP FUNCTION IF EXISTS enforce_source_publication();
+DROP TRIGGER IF EXISTS passages_publication_guard ON passages;
+DROP FUNCTION IF EXISTS enforce_passage_publication();
