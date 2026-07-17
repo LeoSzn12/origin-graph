@@ -1,0 +1,9 @@
+import { NextResponse,type NextRequest } from "next/server";
+import { z } from "zod";
+import { db,transaction } from "@/db";
+import { safeFetchMetadata } from "@/security/fetch";
+import { apiError,requestActor } from "@/http";
+import { appendAudit } from "@/domain/services";
+
+const schema=z.object({id:z.string().regex(/^\d+$/)});
+export async function POST(request:NextRequest){try{if(process.env.ENABLE_LIVE_ADAPTERS!=="true")throw new Error("FEATURE_DISABLED: live adapters are disabled");const {id}=schema.parse(await request.json());const fetched=await safeFetchMetadata(`https://pleiades.stoa.org/places/${id}/json`);const payload=JSON.parse(new TextDecoder().decode(fetched.content)) as {title?:string;uri?:string;reprPoint?:number[];description?:string};if(!payload.title)throw new Error("PLEIADES_INVALID: record has no title");const point=Array.isArray(payload.reprPoint)&&payload.reprPoint.length===2?payload.reprPoint:null;const placeId=await transaction(db(),async client=>{const result=await client.query<{id:string}>(`INSERT INTO places (preferred_name,place_kind,geometry,uncertainty_type,uncertainty_note,external_ids,review_status) VALUES ($1,'ancient_place',CASE WHEN $2::float8 IS NULL THEN NULL ELSE ST_SetSRID(ST_MakePoint($2,$3),4326) END,'approximate_point',$4,$5::jsonb,'draft') RETURNING id`,[payload.title,point?.[0]??null,point?.[1]??null,"Representative point supplied by Pleiades; reviewer must inspect the record.",JSON.stringify({pleiades:id,uri:payload.uri,attribution:"Pleiades contributors, CC BY 3.0"})]);await appendAudit(client,{objectType:'place',objectId:result.rows[0].id,action:'pleiades_draft_imported',actor:requestActor(request),after:{pleiades:id}});return result.rows[0].id;});return NextResponse.json({id:placeId,review_status:'draft',attribution:'Pleiades contributors, CC BY 3.0'},{status:201});}catch(error){return apiError(error);}}

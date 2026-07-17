@@ -1,0 +1,7 @@
+"use client";
+import Link from "next/link";
+import { useEffect,useState } from "react";
+
+interface Source { id:string;source_edition_id:string|null;title:string;input_type:string;status:string;rights_lane:string;created_at:string }
+export default function SourcesPage(){const [sources,setSources]=useState<Source[]>([]);useEffect(()=>{fetch('/api/sources').then(r=>r.json()).then(d=>setSources(d.sources??[]));},[]);return <main className="standard-page"><header className="page-header"><div><p className="eyebrow">Source inbox</p><h1>Sources</h1></div><p>Register first. Preserve provenance. Review rights and exact locators before anything can publish.</p></header><p style={{marginTop:'1.5rem'}}><Link className="solid-button" href="/sources/new">Add a source</Link></p><div className="grid-list">{sources.length===0?<p className="empty-state">No inbox records yet. Synthetic domain fixtures remain visible in the admin browser.</p>:sources.map(source=><Link className="grid-card" href={source.source_edition_id?`/sources/${source.source_edition_id}`:'#'} key={source.id}><span className="kicker">{source.input_type.replaceAll('_',' ')}</span><h2>{source.title}</h2><p>Created {new Date(source.created_at).toLocaleDateString()}</p><footer><span className={`pill lane-${source.rights_lane}`}>{source.rights_lane}</span><span className="status-chip">{source.status.replaceAll('_',' ')}</span></footer></Link>)}</div></main>}
+

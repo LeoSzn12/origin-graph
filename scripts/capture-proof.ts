@@ -1,4 +1,6 @@
-import { chromium, type LaunchOptions } from "playwright";
+import { mkdir } from "node:fs/promises";
+import { chromium, type LaunchOptions, type Page } from "playwright";
+import { syntheticIds } from "../fixtures/synthetic";
 
 function requiredEnv(name: string): string {
   const value = process.env[name];
@@ -11,28 +13,41 @@ const password = requiredEnv("ADMIN_AUTH_PASSWORD");
 const baseUrl = process.env.PROOF_BASE_URL ?? "http://127.0.0.1:3100";
 const executablePath = process.env.CHROMIUM_EXECUTABLE;
 
+async function capture(page: Page, name: string, path: string, ready?: string): Promise<void> {
+  const errors: string[] = [];
+  page.on("console", (message) => { if (message.type() === "error") errors.push(message.text()); });
+  page.on("pageerror", (error) => errors.push(error.message));
+  const response = await page.goto(`${baseUrl}${path}`, { waitUntil: "networkidle" });
+  if (!response?.ok()) throw new Error(`${path} returned ${response?.status() ?? "no response"}`);
+  if (ready) await page.locator(ready).first().waitFor({ state: "visible" });
+  await page.screenshot({ path: `artifacts/screenshots/${name}.png`, fullPage: true });
+  if (errors.length) throw new Error(`${path} emitted browser errors: ${errors.join(" | ")}`);
+}
+
 async function main(): Promise<void> {
-  const launchOptions: LaunchOptions = {
-    headless: true,
-    args: ["--disable-gpu"]
-  };
+  await mkdir("artifacts/screenshots", { recursive: true });
+  const launchOptions: LaunchOptions = { headless: true, args: ["--disable-gpu"] };
   if (executablePath) launchOptions.executablePath = executablePath;
   const browser = await chromium.launch(launchOptions);
   try {
-    for (const proof of [
-      { name: "desktop", viewport: { width: 1440, height: 1000 }, isMobile: false },
-      { name: "mobile", viewport: { width: 390, height: 844 }, isMobile: true }
-    ]) {
-      const context = await browser.newContext({
-        viewport: proof.viewport,
-        isMobile: proof.isMobile,
-        httpCredentials: { username, password }
-      });
-      const page = await context.newPage();
-      await page.goto(`${baseUrl}/admin`, { waitUntil: "networkidle" });
-      await page.screenshot({ path: `artifacts/screenshots/admin-${proof.name}.png`, fullPage: true });
-      await context.close();
-    }
+    const desktop = await browser.newContext({ viewport: { width: 1440, height: 1000 }, httpCredentials: { username, password } });
+    const page = await desktop.newPage();
+    await capture(page, "timeline-desktop", "/", "h1");
+    await capture(page, "sources-desktop", "/sources", "h1");
+    await capture(page, "case-files-desktop", "/case-files", "h1");
+    await capture(page, "hypothesis-desktop", `/hypotheses/${syntheticIds.hypothesis}`, ".evidence-board");
+    await capture(page, "ask-desktop", "/ask", "form");
+    await capture(page, "map-desktop", "/map", ".map-canvas");
+    await capture(page, "graph-desktop", "/graph", ".graph-canvas");
+    await capture(page, "admin-desktop", "/admin", "table");
+    await desktop.close();
+
+    const mobile = await browser.newContext({ viewport: { width: 390, height: 844 }, isMobile: true, httpCredentials: { username, password } });
+    const mobilePage = await mobile.newPage();
+    await capture(mobilePage, "timeline-mobile", "/", "h1");
+    await capture(mobilePage, "source-inbox-mobile", "/sources/new", "form");
+    await capture(mobilePage, "case-file-mobile", "/case-files/flood-traditions-atlas", "h1");
+    await mobile.close();
   } finally {
     await browser.close();
   }
