@@ -14,7 +14,7 @@ export function EvidenceAdder({ hypothesisId, onAdded }: { hypothesisId: string;
   const [message, setMessage] = useState("");
 
   useEffect(() => {
-    fetch("/api/claims").then((response) => response.json()).then((data) => {
+    fetch("/api/hypotheses/claim-options").then((response) => response.json()).then((data) => {
       setClaims(data.claims ?? []);
       setClaimId(data.claims?.[0]?.id ?? "");
     });

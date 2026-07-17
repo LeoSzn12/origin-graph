@@ -1,9 +1,31 @@
 import type { Pool } from "pg";
 import { transaction } from "@/db";
+import { providerRegistry } from "@/connectors/registry";
 import { caseFileShells, syntheticIds as id } from "../../fixtures/synthetic";
 
 export async function seedSyntheticFixtures(pool: Pool): Promise<void> {
   await transaction(pool, async (client) => {
+    for (const provider of providerRegistry) {
+      await client.query(
+        `INSERT INTO source_providers (provider_key,display_name,provider_kind,homepage_url,api_base_url,
+          cultures,content_scope,access_mode,connector_status,rights_lane,rights_note,attribution_text,
+          terms_url,environment_key,capabilities,enabled,last_checked_at)
+         VALUES ($1,$2,$3,$4,$5,$6::jsonb,$7,$8,$9,$10,$11,$12,$13,$14,$15::jsonb,$16,
+           CASE WHEN $9='connected' THEN now() ELSE NULL END)
+         ON CONFLICT (provider_key) DO UPDATE SET display_name=EXCLUDED.display_name,
+           provider_kind=EXCLUDED.provider_kind,homepage_url=EXCLUDED.homepage_url,
+           api_base_url=EXCLUDED.api_base_url,cultures=EXCLUDED.cultures,
+           content_scope=EXCLUDED.content_scope,access_mode=EXCLUDED.access_mode,
+           connector_status=EXCLUDED.connector_status,rights_lane=EXCLUDED.rights_lane,
+           rights_note=EXCLUDED.rights_note,attribution_text=EXCLUDED.attribution_text,
+           terms_url=EXCLUDED.terms_url,environment_key=EXCLUDED.environment_key,
+           capabilities=EXCLUDED.capabilities,enabled=EXCLUDED.enabled,updated_at=now()`,
+        [provider.key,provider.name,provider.kind,provider.homepage,provider.apiBase ?? null,
+          JSON.stringify(provider.cultures),provider.scope,provider.access,provider.status,
+          provider.rightsLane,provider.rightsNote,provider.attribution ?? null,provider.termsUrl ?? null,
+          provider.environmentKey ?? null,JSON.stringify(provider.capabilities),provider.enabled]);
+    }
+
     await client.query(
       `INSERT INTO works (id, title, work_type, tradition, culture, original_language, description)
        VALUES

@@ -13,12 +13,13 @@ export async function GET(request: NextRequest) {
     const lanes = params.get("lanes")?.split(",").filter(Boolean) ?? [];
     const reviewed = params.get("reviewed") !== "false";
     const result = await db().query(
-      `SELECT * FROM timeline_items
-       WHERE coalesce(latest_year,earliest_year,$1) >= $1 AND coalesce(earliest_year,latest_year,$2) <= $2
-         AND ($3::text[]='{}' OR lane=ANY($3::text[]))
-         AND (NOT $4 OR review_status IN ('approved','published'))
-       ORDER BY earliest_year NULLS LAST,title LIMIT 1000`, [from, to, lanes, reviewed]);
+      `SELECT ti.*,p.source_edition_id,se.title AS source_title,p.locator_type,p.locator_value
+       FROM timeline_items ti LEFT JOIN claims sc ON sc.id=ti.source_claim_id
+       LEFT JOIN passages p ON p.id=sc.passage_id LEFT JOIN source_editions se ON se.id=p.source_edition_id
+       WHERE coalesce(ti.latest_year,ti.earliest_year,$1) >= $1 AND coalesce(ti.earliest_year,ti.latest_year,$2) <= $2
+         AND ($3::text[]='{}' OR ti.lane=ANY($3::text[]))
+         AND (NOT $4 OR ti.review_status IN ('approved','published'))
+       ORDER BY ti.earliest_year NULLS LAST,ti.title LIMIT 1000`, [from, to, lanes, reviewed]);
     return NextResponse.json({ from, to, items: result.rows });
   } catch (error) { return apiError(error); }
 }
-

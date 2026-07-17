@@ -3,6 +3,7 @@ import { afterAll,beforeAll,beforeEach,describe,expect,it } from "vitest";
 import { migrate } from "../../scripts/migrate";
 import { AskService } from "@/research/ask-service";
 import { SourceInputService } from "@/ingestion/source-input-service";
+import { ProviderService } from "@/connectors/provider-service";
 import { resetTestData,testPool } from "../helpers";
 
 let pool:Pool;
@@ -41,5 +42,18 @@ describe("research workspace",()=>{
   it("never returns a mythical place as factual geometry",async()=>{
     const result=await pool.query(`SELECT place_kind,geometry IS NULL AS has_no_geometry FROM places WHERE preferred_name='SYNTHETIC Literary Place'`);
     expect(result.rows[0]).toEqual({place_kind:"literary",has_no_geometry:true});
+  });
+
+  it("catalogs global providers and stages external metadata without publishing it",async()=>{
+    const service=new ProviderService(pool);
+    const providers=await service.list();
+    expect(providers.length).toBeGreaterThanOrEqual(18);
+    expect(providers.some((provider)=>provider.provider_key==="sefaria"&&provider.rights_lane==="yellow")).toBe(true);
+    const id=await service.stage("loc",{external_id:"synthetic-loc-record",record_type:"manuscript",title:"SYNTHETIC external catalog record",creators:[],places:[],subjects:["synthetic"],rights_lane:"yellow",rights_note:"Test-only metadata; item rights unreviewed.",raw_metadata:{fixture:true}},"tester");
+    const record=await pool.query("SELECT review_status,rights_lane FROM external_records WHERE id=$1",[id]);
+    expect(record.rows[0]).toEqual({review_status:"inbox",rights_lane:"yellow"});
+    const editionId=await service.promote(id,"tester");
+    const edition=await pool.query("SELECT review_status,rights_lane,publication_allowed FROM source_editions WHERE id=$1",[editionId]);
+    expect(edition.rows[0]).toEqual({review_status:"draft",rights_lane:"yellow",publication_allowed:false});
   });
 });

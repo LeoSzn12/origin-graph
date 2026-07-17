@@ -4,7 +4,7 @@ Origin Graph is a standalone, source-grounded comparative research workspace. It
 
 The repository includes the research foundation and a locally runnable application: reviewed source inbox, rights workflow, timeline, case-file shells, private Hypothesis Lab, deterministic citation-grounded Ask, uncertainty-aware map, focused graph, sacred-teacher role comparison, review queue, and admin data browser.
 
-Only clearly labeled synthetic fixtures ship with the app. No automated YouTube/podcast retrieval, mass text ingestion, public social features, or truth-probability score is present. Live metadata adapters default off.
+Only clearly labeled synthetic fixtures ship with the app. No automated YouTube/podcast retrieval, mass text ingestion, public social features, or truth-probability score is present. Arbitrary URL inspection defaults off; bounded governed-provider searches are available inside the authenticated review workflow.
 
 ## Local setup
 
@@ -18,10 +18,13 @@ Only clearly labeled synthetic fixtures ship with the app. No automated YouTube/
 
 `ENABLE_LIVE_ADAPTERS=false` is the safe default. Turning it on only enables bounded metadata inspection and the Pleiades draft importer; imported records still enter human review in Yellow rights state. It does not enable mass ingestion or automated transcript retrieval.
 
+The Data Sources screen can search seven bounded no-key/reference adapters: Crossref, Library of Congress, NOAA/WDS Paleoclimatology, Paleobiology Database, Pleiades exact IDs, Internet Archive discovery metadata, and exact Sefaria references. Results remain external candidates until a human stages and promotes them into source drafts. Quran Foundation, Europeana, Smithsonian, and OpenAlex remain disabled until their environment credentials are supplied.
+
 ## Product surfaces
 
 - `/` — semantic-band timeline and accessible chronology table
 - `/sources` — private source inbox; manual citation, URL/DOI, transcript, and validated upload entry
+- `/data-sources` — governed catalog of text, archive, archaeology, geography, scholarship, and scientific providers
 - `/review` — private human review queue
 - `/ask` — deterministic answers from published claims with exact citation locators
 - `/case-files` — ten empty editorial shells, intentionally unpopulated until sources are verified

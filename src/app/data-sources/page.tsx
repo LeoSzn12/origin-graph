@@ -1,0 +1,2 @@
+import { ProviderCatalog } from "@/components/provider-catalog";
+export default function DataSourcesPage(){return <main className="standard-page wide-page"><header className="page-header data-source-header"><div><p className="eyebrow">Corpus & evidence network</p><h1>Data sources</h1></div><p>Search connected catalogs, inspect rights, and stage exact records for review. Breadth is visible; publication remains edition-specific.</p></header><ProviderCatalog/></main>}
