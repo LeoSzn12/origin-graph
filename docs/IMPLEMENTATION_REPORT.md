@@ -6,6 +6,7 @@
 - Branch: `feat/origin-graph-mvp`
 - Foundation commit: `0b4ae4a05c2e30f127e3174e02e0c8939e95a1f2`
 - Application implementation commit: `1a23e80a22d28035db7f84467618b6a44995d428`
+- Research-network expansion commit: `0c1a155041a5ea7ad4475f213127ae6d62af7b4f`
 - Nothing was merged or deployed.
 
 ## 2. Architecture decisions
@@ -24,6 +25,8 @@ The foundation schema covers works, editions, witnesses, passages, claims, sourc
 
 Migration `0004_research_workspace.sql` adds source inputs and private snapshots, database jobs, verification tasks, source-impact suggestions, hypothesis revisions, saved case queries, database-backed rate-limit buckets, full-text search vectors, storage/publication metadata, and the timeline/review views required by the application.
 
+Migrations `0005_provider_registry.sql` and `0006_external_record_promotion.sql` add the governed provider registry, bounded synchronization records, staged external records, provider health, and an explicit external-record-to-draft-source promotion path through human review.
+
 No truth score or probability column exists.
 
 ## 4. Migrations and indexes
@@ -35,6 +38,8 @@ applied 0001_extensions.sql
 applied 0002_domain_schema.sql
 applied 0003_guards_and_views.sql
 applied 0004_research_workspace.sql
+applied 0005_provider_registry.sql
+applied 0006_external_record_promotion.sql
 pgcrypto:1.3
 postgis:3.6.4
 vector:0.8.5
@@ -63,12 +68,12 @@ The place fixtures prove factual-coordinate suppression for literary places and 
 ## 6. Tests and behavioral proof
 
 - `npm run typecheck` — passed.
-- `npm test` against the dedicated test database — 4 files, 17 tests passed.
-- `npm run build` — passed; 23 static/dynamic pages generated with all routes compiled.
+- `npm test` against the dedicated test database — 5 files, 21 tests passed.
+- `npm run build` — passed; 26 static/dynamic pages generated with all routes compiled.
 - `npm audit --audit-level=high` — 0 vulnerabilities.
 - `git diff --check` — passed.
 - Fresh-database migration with real extensions — passed.
-- Browser proof on 11 desktop/mobile surfaces — passed response, readiness, console-error, and page-error checks.
+- Browser proof across the expanded desktop/mobile workspace — passed response, readiness, console-error, and page-error checks, including a live provider search and a grounded Ask result.
 
 Tests prove:
 
@@ -83,6 +88,10 @@ Tests prove:
 - URL policy blocks private/loopback targets and unsafe upload types;
 - Ask accepts only valid citation markers, returns reviewed material, and refuses insufficient coverage;
 - literary/mythical place responses contain no factual geometry.
+- provider coverage spans textual traditions, archaeology, climate, bibliography, and museum/library catalogs without treating catalog registration as licensed corpus ingestion;
+- staged external records remain Yellow and unpublished until a reviewer creates and approves an edition draft;
+- Ask filters evidence role, tradition, and date range while separating source statements, interpretations, support, challenge, chronology, and source genealogy;
+- Ask-to-Hypothesis creates a private draft with contextualizing evidence and no truth-probability score.
 
 Representative HTTP proof:
 
@@ -91,15 +100,17 @@ GET /api/timeline -> 200, six independent temporal roles from the synthetic even
 POST /api/ask {"question":"synthetic claim"} -> partial answer, exact C1 locator, coverage uncertainty
 GET /api/hypotheses without authentication -> 401
 GET /api/hypotheses with configured local authentication -> 200
+GET /api/providers -> governed status and rights gates for nineteen providers
+GET /api/providers/crossref/search?q=Sumerian%20King%20List -> bounded live metadata results
 ```
 
-Screenshots are stored in `artifacts/screenshots/`, including timeline desktop/mobile, source inbox desktop/mobile, case files desktop/mobile, hypothesis board, Ask, map, graph, and admin browser.
+Screenshots are stored in `artifacts/screenshots/`, including timeline desktop/mobile, source inbox desktop/mobile, case files desktop/mobile, hypothesis board, Ask evidence, data-source search, map, graph, and admin browser.
 
 ## 7. Screens and APIs implemented
 
-The default homepage is the timeline with semantic time bands, role-specific lanes, linear within-band scaling, uncertainty intervals, an Ask overlay, and a matching accessible table. Additional surfaces cover the reviewed source inbox, source detail and rights review, human review queue, ten case files and exports, private hypothesis creation/evidence/export, deterministic Ask dossiers, the uncertainty-aware map, focused typed graph, sacred-teacher native-role comparison, and the admin browser.
+The default homepage is the timeline with semantic time bands, role-specific lanes, linear within-band scaling, uncertainty intervals, linked inspectors, an Ask overlay, and a matching accessible table. Additional surfaces cover the governed data-source catalog and live bounded search, reviewed source inbox, source detail and rights review, human review queue, ten case files and exports, private hypothesis creation/editing/revisions/evidence/export, deterministic Ask dossiers, the uncertainty-aware interactive map, focused typed graph, sacred-teacher native-role comparison, and the admin browser.
 
-APIs cover source registration/upload/transcript review, rights decisions, review transitions, chronology/anchors, claims, grounded Ask, case files/export, hypotheses/revisions/evidence/export, entity profiles and sacred-role comparison, media segments, map features and feature-gated Pleiades drafts, and graph neighborhoods/source lineage.
+APIs cover source registration/upload/transcript review, rights decisions, review transitions, provider discovery/search/staging/promotion, chronology/anchors, claims, grounded Ask, case files/export, hypotheses/revisions/evidence/export, entity profiles and sacred-role comparison, media segments, map features and feature-gated Pleiades drafts, and graph neighborhoods/source lineage.
 
 ## 8. Security and rights controls included
 
@@ -113,18 +124,19 @@ APIs cover source registration/upload/transcript review, rights decisions, revie
 - Database publication guards for source rights, passage locators, and connection citations.
 - Reviewed/published-only public claims, chronology, map, graph, entity, media, and Ask outputs.
 - Sensitive coordinate generalization, literary-place geometry suppression, and Pleiades attribution.
-- Live external adapters feature-gated off by default.
+- Live external access is provider-specific: seven bounded metadata/reference adapters are available, credentialed providers remain disabled until configured, and no adapter silently promotes or publishes content.
 - No credentials are stored in code, fixtures, screenshots, or this report.
 
 ## 9. Deviations and known limitations
 
 - The ten case files and Sacred Teachers Atlas have interface/schema support but no real seed corpus. This is intentional: completing them requires manual verification of editions, locators, translations, genealogy, rights, and counterevidence.
+- The nineteen-provider catalog is not a claim that every historical text has been copied into Origin Graph. Seven adapters currently perform bounded live metadata/reference searches; credentialed or rights-sensitive providers require keys, edition choices, and editorial approval. The exact matrix is recorded in `docs/CORPUS_CONNECTION_MATRIX.md`.
 - Metadata inspection and Pleiades import are feature-gated and were not exercised against live services in automated tests. No automated transcript retrieval exists.
 - Object storage is a local private adapter; production needs a managed private object store and retention policy.
 - HTTP Basic is appropriate for this isolated V1 review gate, but production multi-user work needs identity, roles, session expiry, and CSRF controls.
-- Ask is deterministic lexical retrieval. It has strong grounding/refusal behavior but no semantic embedding re-ranker or prose model.
+- Ask is deterministic lexical retrieval. It has strong grounding/refusal behavior, evidence-role/date/tradition filters, genealogy and chronology context, but no semantic embedding re-ranker or prose model.
 - The review queue supports safe lifecycle advancement, while detailed editorial comparison remains a human workflow rather than automated adjudication.
 
 ## 10. Next smallest implementation step
 
-The next safe step is an editorial pilot, not more crawler code: configure production-grade identity/database/private storage, choose a very small manually verified source set, record per-edition rights and exact locators, and populate one case file plus a small Sacred Teachers comparison only after review. Deployment remains a separate founder-approved action.
+The next safe step is an editorial pilot, not indiscriminate crawling: provide the credentialed API keys, approve edition/license policies by tradition, configure production-grade identity/database/private storage, and ingest a small manually verified source set with exact locators. Deployment remains a separate founder-approved action.
