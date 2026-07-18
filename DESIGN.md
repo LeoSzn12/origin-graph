@@ -19,6 +19,8 @@ The interface uses an archival editorial language: warm paper, dark ink, restrai
 ## Interaction and layout
 
 - The global research navigation persists across all surfaces and horizontally scrolls on narrow screens.
+- Primary navigation follows the user's job: Explore, Ask evidence, Research files, Hypotheses, Sources. Specialist visualizations and editorial controls live under Tools.
+- The core workflow stays visible on research surfaces: ask a question, evaluate the evidence and citations, develop a hypothesis, then add evidence when coverage is missing.
 - Major screens use one dominant heading, rules, and editorial sections instead of collections of floating cards.
 - Touch controls target a minimum 44px height where forms and primary actions are used.
 - Timeline bands scroll horizontally on mobile; the accessible table mirrors the visual data.
@@ -27,6 +29,9 @@ The interface uses an archival editorial language: warm paper, dark ink, restrai
 
 ## Content rules
 
+- Prefer plain research language over internal system terms: “evidence types” rather than “lanes,” “strong reviewed coverage” rather than “grounded,” and “source library” rather than “inbox.”
+- Every no-results state explains why the corpus cannot answer and offers a next action: search connected collections or add a trusted source.
+- Ask results separate myth, folklore, and primary texts from scientific/material evidence, scholarship, and modern commentary before showing any synthesis.
 - Use real interface copy or explicitly marked synthetic fixtures—never placeholder pseudo-history.
 - Show status, rights, source role, exact locator, and uncertainty close to the object they qualify.
 - Empty states explain the editorial requirement that prevents publication.
