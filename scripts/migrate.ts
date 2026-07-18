@@ -15,6 +15,15 @@ const extensionStubs = `
   CREATE FUNCTION ST_GeomFromText(wkt text, srid integer)
     RETURNS geometry LANGUAGE sql IMMUTABLE
     AS 'SELECT jsonb_build_object(''wkt'', wkt, ''srid'', srid)::geometry';
+  CREATE FUNCTION ST_MakePoint(x double precision, y double precision)
+    RETURNS geometry LANGUAGE sql IMMUTABLE
+    AS 'SELECT jsonb_build_object(''type'', ''Point'', ''coordinates'', jsonb_build_array(x, y))::geometry';
+  CREATE FUNCTION ST_SetSRID(input_geometry geometry, srid integer)
+    RETURNS geometry LANGUAGE sql IMMUTABLE
+    AS 'SELECT (input_geometry::jsonb || jsonb_build_object(''srid'', srid))::geometry';
+  CREATE FUNCTION ST_AsGeoJSON(input_geometry geometry)
+    RETURNS text LANGUAGE sql IMMUTABLE
+    AS 'SELECT (input_geometry::jsonb - ''srid'')::text';
 `;
 
 function testCompatibleSql(file: string, sql: string): string {
