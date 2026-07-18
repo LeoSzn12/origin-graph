@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useState, type FormEvent } from "react";
+import { useEffect,useState, type FormEvent } from "react";
 import { ResearchPath } from "@/components/research-path";
 
 type Tab="answer"|"evidence"|"chronology"|"citations";
@@ -35,6 +35,8 @@ export default function AskPage(){
   const [loading,setLoading]=useState(false);
   const [tab,setTab]=useState<Tab>("answer");
   const [message,setMessage]=useState("");
+
+  useEffect(()=>{const seededQuestion=new URLSearchParams(window.location.search).get("question");if(seededQuestion)setQuestion(seededQuestion);},[]);
 
   async function submit(event:FormEvent){event.preventDefault();setLoading(true);setMessage("");const filters={evidence_roles:selectedRoles.length?selectedRoles:undefined,from_year:fromYear?Number(fromYear):undefined,to_year:toYear?Number(toYear):undefined};const response=await fetch("/api/ask",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({question,filters})});setResult(await response.json());setLoading(false);setTab("answer");requestAnimationFrame(()=>document.getElementById("results")?.scrollIntoView({behavior:"smooth",block:"start"}));}
   function toggleRole(role:string){setSelectedRoles(current=>current.includes(role)?current.filter(item=>item!==role):[...current,role]);}
