@@ -132,14 +132,14 @@ export async function seedSyntheticFixtures(pool: Pool): Promise<void> {
        ON CONFLICT (id) DO NOTHING`, [id.place]);
     await client.query(
       `INSERT INTO places (id, preferred_name, place_kind, geometry, uncertainty_type, uncertainty_note, review_status)
-       VALUES ($1,'SYNTHETIC Approximate Site','synthetic_site',ST_SetSRID(ST_MakePoint(12.5,34.4),4326),
+       VALUES ($1,'SYNTHETIC Approximate Site','synthetic_site',ST_SetSRID(ST_MakePoint(12.5::double precision,34.4::double precision),4326),
          'approximate_point','Test-only point used to exercise map uncertainty.','approved')
        ON CONFLICT (id) DO UPDATE SET geometry=EXCLUDED.geometry, uncertainty_note=EXCLUDED.uncertainty_note`, [id.mappedPlace]);
     await client.query(
       `INSERT INTO places (id, preferred_name, place_kind, geometry, public_geometry, uncertainty_type,
         uncertainty_note, sensitive, review_status)
-       VALUES ($1,'SYNTHETIC Protected Site','synthetic_site',ST_SetSRID(ST_MakePoint(13.1,35.2),4326),
-         ST_SetSRID(ST_MakePoint(13.0,35.0),4326),'generalized',
+       VALUES ($1,'SYNTHETIC Protected Site','synthetic_site',ST_SetSRID(ST_MakePoint(13.1::double precision,35.2::double precision),4326),
+         ST_SetSRID(ST_MakePoint(13.0::double precision,35.0::double precision),4326),'generalized',
          'Public location is deliberately generalized for this test-only sensitive site.',true,'approved')
        ON CONFLICT (id) DO UPDATE SET geometry=EXCLUDED.geometry,public_geometry=EXCLUDED.public_geometry,
          uncertainty_note=EXCLUDED.uncertainty_note`, [id.sensitivePlace]);
