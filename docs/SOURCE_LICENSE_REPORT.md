@@ -1,8 +1,24 @@
 # Source and license report
 
-No real source corpus is bundled in this repository.
+## Current reviewed pilot
 
-The shipped records are original synthetic test fixtures labeled `SYNTHETIC`; they are not historical evidence and contain no third-party quotations. The ten named case files are empty editorial shells.
+The repository now contains a bounded real-source pilot in addition to labeled synthetic tests. It does not contain a complete world corpus.
+
+| Source family | Material used | Rights/publication treatment |
+| --- | --- | --- |
+| World English Bible | 459 exact verses from selected chapters | Public-domain edition; exact locators, hashes, and stable source URLs retained |
+| Project Gutenberg | Exact line ranges from selected public-domain US editions of *Timaeus*, *1 Enoch*, *Mahabharata*, *Dhammapada*, *Analects*, and Rodwell's Quran translation | Edition-specific Gutenberg notices and URLs retained; downstream users must consider their jurisdiction |
+| Crossref | DOI metadata and a reviewed paper abstract | Metadata/abstract only; no publisher full text copied |
+| PBDB | Two exact occurrence API records | Record URL, collection/reference identifiers, intervals, and age uncertainty retained |
+| NOAA/WDS | One exact paleoclimate study record | Dataset coverage and study link retained; no causal inference fabricated |
+| Pleiades | Reviewed ancient-place records | “Pleiades contributors, CC BY 3.0” attribution retained |
+| Wikipedia, Wikisource, Wikidata, LOC, Internet Archive, Sefaria | Bounded discovery/reference results | Candidates only unless a named edition is separately reviewed and promoted |
+
+The older checkpoint statement below is retained for history and no longer describes the current database.
+
+Earlier checkpoint: no real source corpus was bundled at that review gate.
+
+Synthetic fixtures remain labeled `SYNTHETIC`; they are behavioral tests, not historical evidence, and are excluded from public research queries.
 
 The application records rights per source edition using Green, Yellow, and Red lanes. Unknown rights default to Yellow, block full-text publication, and require a named human review before publication. User-provided transcript text remains private; only reviewed rights-safe summaries and metadata may be published.
 

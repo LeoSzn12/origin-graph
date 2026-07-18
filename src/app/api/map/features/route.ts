@@ -13,7 +13,7 @@ export async function GET(request: NextRequest) {
       `SELECT id,preferred_name,place_kind,uncertainty_type,uncertainty_note,sensitive,external_ids,
         CASE WHEN place_kind IN ('literary','mythical') THEN NULL
           ELSE ST_AsGeoJSON(CASE WHEN sensitive THEN public_geometry ELSE geometry END) END AS geojson
-       FROM places WHERE (NOT $1 OR review_status IN ('approved','published')) ORDER BY preferred_name`, [reviewed]);
+       FROM places WHERE (NOT $1 OR review_status IN ('approved','published')) AND preferred_name NOT LIKE 'SYNTHETIC%' ORDER BY preferred_name`, [reviewed]);
     return NextResponse.json({ type: "FeatureCollection", features: result.rows.map((place) => ({
       type: "Feature", id: place.id, geometry: place.geojson ? JSON.parse(place.geojson) : null,
       properties: { name: place.preferred_name, kind: place.place_kind, uncertainty: place.uncertainty_type,
@@ -21,4 +21,3 @@ export async function GET(request: NextRequest) {
     })), attribution: ["Pleiades data, where present, requires attribution under CC BY 3.0."] });
   } catch (error) { return apiError(error); }
 }
-

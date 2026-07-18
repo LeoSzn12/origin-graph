@@ -2,8 +2,15 @@
 
 Origin Graph does not treat “available online” as equivalent to “licensed, verified, and safe to publish.” A provider connection has three independent states: catalog visibility, live metadata/reference search, and approved edition content.
 
+The registry currently contains 25 providers. “Connected” below means a bounded adapter or controlled importer exists; it never means an entire provider corpus is copied or automatically published.
+
 | Provider | Domain | Current connection | Publication boundary |
 | --- | --- | --- | --- |
+| World English Bible | Bible | Controlled chapter importer; reviewed pilot loaded | Named public-domain edition only; exact verse locators and hashes retained |
+| Project Gutenberg | Public-domain editions | OPDS discovery plus controlled line-range importer; reviewed pilot loaded | Gutenberg US status is not a global rights guarantee; edition notice retained |
+| Wikipedia | Reference summaries | Live bounded reference search | Reference/discovery only; not treated as primary evidence |
+| Wikisource | Public-source editions | Live bounded MediaWiki search | Review edition, transcription status, and license before promotion |
+| Wikidata | Linked open metadata | Live bounded entity search | Preserve identifiers and source references; never substitute metadata for a claim source |
 | Sefaria | Tanakh, rabbinic and Jewish texts | Exact-reference metadata preview | Select and record the license for the named version before storing text |
 | Quran Foundation | Quran, translations, tafsir metadata | Credential adapter registered | Requires client credentials; preserve Arabic/translation resource terms |
 | Tanzil | Verified Arabic Quran text | Manual controlled import registered | Arabic must remain unmodified and Tanzil notice must remain visible |
@@ -15,7 +22,7 @@ Origin Graph does not treat “available online” as equivalent to “licensed,
 | Library of Congress | Global books, manuscripts, maps and collections | Live no-key metadata search | Item rights remain record-specific |
 | Europeana | European/global cultural heritage | Credential adapter registered | Provider and object rights statements retained |
 | Smithsonian Open Access | Museum/archive/library objects | Credential adapter registered | CC0 assets can become Green only after record verification |
-| Internet Archive | Scanned editions and media | Live discovery-metadata search | Archive presence is never proof of public domain |
+| Internet Archive | Scanned editions and media | Configured discovery-metadata search | Archive presence is never proof of public domain |
 | Pleiades | Ancient geography | Live exact-ID lookup | Preserve Pleiades contributors / CC BY 3.0 attribution |
 | Open Context | Archaeological datasets | Provider registered | Dataset licenses and sensitive-site policies reviewed per record |
 | NOAA/WDS Paleoclimatology | Proxy records and reconstructions | Live no-key study search | Preserve investigators, methods, chronology and dataset links |

@@ -12,7 +12,7 @@ export class ProviderService {
     return rows(this.pool, `SELECT * FROM provider_health ORDER BY provider_kind,display_name`);
   }
 
-  async search(key: string, query: string, actor: string): Promise<ExternalCandidate[]> {
+  async search(key: string, query: string, actor: string, limit = 12): Promise<ExternalCandidate[]> {
     const definition = providerRegistry.find((provider) => provider.key === key);
     if (!definition) throw new Error("NOT_FOUND: provider not found");
     if (!definition.enabled) throw new Error(`CONNECTOR_DISABLED: ${definition.name} needs credentials or editorial approval`);
@@ -22,7 +22,7 @@ export class ProviderService {
       [key,JSON.stringify({query}),actor]);
     if (!run.rows[0]) throw new Error("NOT_FOUND: provider registry has not been seeded");
     try {
-      const results = await searchProvider(key, query);
+      const results = await searchProvider(key, query, limit);
       await this.pool.query(`UPDATE provider_sync_runs SET status='completed',records_seen=$2,completed_at=now(),updated_at=now() WHERE id=$1`,[run.rows[0].id,results.length]);
       await this.pool.query(`UPDATE source_providers SET last_checked_at=now(),updated_at=now() WHERE provider_key=$1`,[key]);
       return results;

@@ -1,0 +1,571 @@
+{
+  "exported_at": "2026-07-17T07:38:04.970Z",
+  "notice": "Research export. Claims are edition-specific; motif similarity is not identity; rights notes travel with every source.",
+  "case_files": [
+    {
+      "id": "90000000-0000-4000-8000-000000000004",
+      "slug": "african-humid-period",
+      "title": "African Humid Period / Green Sahara",
+      "core_question": "When was the Sahara substantially wetter, what evidence supports that reconstruction, and how did changing climate relate to human habitation and migration?",
+      "summary": null,
+      "scope": "Empty editorial shell; no evidence seeded.",
+      "status": "draft",
+      "published_revision": 0,
+      "review_status": "draft",
+      "created_at": "2026-07-17T05:22:34.657Z",
+      "updated_at": "2026-07-17T05:22:34.657Z",
+      "claims": [],
+      "sources": [
+        {
+          "title": "A drop in Sahara dust fluxes records the northern limits of the African Humid Period",
+          "role": "reference_metadata",
+          "stable_identifier": "https://doi.org/10.1038/s41467-019-11701-z",
+          "license": null,
+          "rights_lane": "yellow",
+          "rights_note": "Bibliographic metadata only; publisher work-level rights require review.",
+          "canonical_url": "https://doi.org/10.1038/s41467-019-11701-z",
+          "full_text_allowed": false
+        }
+      ]
+    },
+    {
+      "id": "90000000-0000-4000-8000-000000000003",
+      "slug": "atlantis-in-plato",
+      "title": "Atlantis in Plato",
+      "core_question": "What does Plato's Timaeus and Critias claim, what date does the narrative imply, and how have later candidate-location hypotheses developed?",
+      "summary": null,
+      "scope": "Empty editorial shell; no evidence seeded.",
+      "status": "draft",
+      "published_revision": 0,
+      "review_status": "draft",
+      "created_at": "2026-07-17T05:22:34.657Z",
+      "updated_at": "2026-07-17T05:22:34.657Z",
+      "claims": [
+        {
+          "statement": "In the Timaeus dialogue, Critias' account places Atlantis beyond the Pillars of Heracles and reports its disappearance following earthquakes and floods.",
+          "class": "textual_report",
+          "role": "primary_tradition",
+          "locator": "Project Gutenberg ebook #1572, Timaeus dialogue — Critias account of Atlantis, source lines 4300-4370, snapshot 4f839b423198",
+          "source": "Timaeus",
+          "stable_identifier": "gutenberg:1572",
+          "license": "Project Gutenberg License / United States public-domain status",
+          "rights_lane": "green",
+          "rights_note": "Embedded license reviewed. Project Gutenberg warns that users outside the United States must check local copyright law.",
+          "canonical_url": "https://www.gutenberg.org/ebooks/1572"
+        }
+      ],
+      "sources": [
+        {
+          "title": "Timaeus",
+          "role": "primary_tradition",
+          "stable_identifier": "gutenberg:1572",
+          "license": "Project Gutenberg License / United States public-domain status",
+          "rights_lane": "green",
+          "rights_note": "Embedded license reviewed. Project Gutenberg warns that users outside the United States must check local copyright law.",
+          "canonical_url": "https://www.gutenberg.org/ebooks/1572",
+          "full_text_allowed": true
+        },
+        {
+          "title": "Timaeus",
+          "role": "reference_metadata",
+          "stable_identifier": "https://www.gutenberg.org/ebooks/1572",
+          "license": null,
+          "rights_lane": "green",
+          "rights_note": "Project Gutenberg catalog metadata is public domain. Review the ebook's embedded license and jurisdiction before importing or publishing edition text.",
+          "canonical_url": "https://www.gutenberg.org/ebooks/1572",
+          "full_text_allowed": false
+        },
+        {
+          "title": "Critias",
+          "role": "reference_metadata",
+          "stable_identifier": "https://en.wikisource.org/wiki/Critias",
+          "license": null,
+          "rights_lane": "yellow",
+          "rights_note": "Review the page edition, source scan, and page-level license before passage ingestion; preserve revision and contributor attribution.",
+          "canonical_url": "https://en.wikisource.org/wiki/Critias",
+          "full_text_allowed": false
+        }
+      ]
+    },
+    {
+      "id": "90000000-0000-4000-8000-000000000007",
+      "slug": "deep-human-timeline",
+      "title": "Deep Human Timeline",
+      "core_question": "How long have Homo sapiens and other hominins existed, overlapped, migrated, and developed technologies before written history?",
+      "summary": null,
+      "scope": "Empty editorial shell; no evidence seeded.",
+      "status": "draft",
+      "published_revision": 0,
+      "review_status": "draft",
+      "created_at": "2026-07-17T05:22:34.657Z",
+      "updated_at": "2026-07-17T05:22:34.657Z",
+      "claims": [],
+      "sources": [
+        {
+          "title": "Homo sapiens",
+          "role": "reference_metadata",
+          "stable_identifier": "https://paleobiodb.org/classic/basicCollectionSearch?collection_no=col:21337",
+          "license": null,
+          "rights_lane": "green",
+          "rights_note": "PBDB occurrence metadata; preserve collection/reference attribution and geological uncertainty.",
+          "canonical_url": "https://paleobiodb.org/classic/basicCollectionSearch?collection_no=col:21337",
+          "full_text_allowed": false
+        },
+        {
+          "title": "Homo erectus",
+          "role": "reference_metadata",
+          "stable_identifier": "https://paleobiodb.org/classic/basicCollectionSearch?collection_no=col:21294",
+          "license": null,
+          "rights_lane": "green",
+          "rights_note": "PBDB occurrence metadata; preserve collection/reference attribution and geological uncertainty.",
+          "canonical_url": "https://paleobiodb.org/classic/basicCollectionSearch?collection_no=col:21294",
+          "full_text_allowed": false
+        }
+      ]
+    },
+    {
+      "id": "90000000-0000-4000-8000-000000000010",
+      "slug": "divine-astral-weapons",
+      "title": "Divine and Astral Weapons in Sanskrit Epics",
+      "core_question": "What do selected passages in the Mahabharata and related works say about astras and extraordinary weapons, and what interpretations are textually justified?",
+      "summary": null,
+      "scope": "Empty editorial shell; no evidence seeded.",
+      "status": "draft",
+      "published_revision": 0,
+      "review_status": "draft",
+      "created_at": "2026-07-17T05:22:34.657Z",
+      "updated_at": "2026-07-17T05:22:34.657Z",
+      "claims": [
+        {
+          "statement": "Mahabharata Section CLXXII reports Arjuna invoking a fiery weapon transmitted through named teachers and says it burns a Gandharva's chariot.",
+          "class": "textual_report",
+          "role": "primary_tradition",
+          "locator": "Project Gutenberg ebook #15474, Mahabharata Volume 1, Section CLXXII — fiery celestial weapon, source lines 16872-16894, snapshot 246325dcb896",
+          "source": "The Mahabharata of Krishna-Dwaipayana Vyasa, Volume 1",
+          "stable_identifier": "gutenberg:15474",
+          "license": "Project Gutenberg License / United States public-domain status",
+          "rights_lane": "green",
+          "rights_note": "Embedded license reviewed. Project Gutenberg warns that users outside the United States must check local copyright law.",
+          "canonical_url": "https://www.gutenberg.org/ebooks/15474"
+        }
+      ],
+      "sources": [
+        {
+          "title": "The Mahabharata of Krishna-Dwaipayana Vyasa, Volume 1",
+          "role": "primary_tradition",
+          "stable_identifier": "gutenberg:15474",
+          "license": "Project Gutenberg License / United States public-domain status",
+          "rights_lane": "green",
+          "rights_note": "Embedded license reviewed. Project Gutenberg warns that users outside the United States must check local copyright law.",
+          "canonical_url": "https://www.gutenberg.org/ebooks/15474",
+          "full_text_allowed": true
+        },
+        {
+          "title": "Obsolete Weapons in the Mahabharata",
+          "role": "reference_metadata",
+          "stable_identifier": "https://doi.org/10.1558/rosa.24401",
+          "license": null,
+          "rights_lane": "yellow",
+          "rights_note": "Bibliographic metadata only; publisher work-level rights require review.",
+          "canonical_url": "https://doi.org/10.1558/rosa.24401",
+          "full_text_allowed": false
+        },
+        {
+          "title": "The Mahabharata of Krishna-Dwaipayana Vyasa, Volume 1",
+          "role": "reference_metadata",
+          "stable_identifier": "https://www.gutenberg.org/ebooks/15474",
+          "license": null,
+          "rights_lane": "green",
+          "rights_note": "Project Gutenberg catalog metadata is public domain. Review the ebook's embedded license and jurisdiction before importing or publishing edition text.",
+          "canonical_url": "https://www.gutenberg.org/ebooks/15474",
+          "full_text_allowed": false
+        }
+      ]
+    },
+    {
+      "id": "90000000-0000-4000-8000-000000000001",
+      "slug": "flood-traditions-atlas",
+      "title": "Flood Traditions Atlas",
+      "core_question": "What similarities and differences exist among early flood traditions, and what can chronology, geography, source genealogy, and paleoclimate legitimately tell us?",
+      "summary": null,
+      "scope": "Empty editorial shell; no evidence seeded.",
+      "status": "draft",
+      "published_revision": 0,
+      "review_status": "draft",
+      "created_at": "2026-07-17T05:22:34.657Z",
+      "updated_at": "2026-07-17T05:22:34.657Z",
+      "claims": [
+        {
+          "statement": "Genesis 6:13 presents divine judgment in response to the earth being filled with violence.",
+          "class": "textual_report",
+          "role": "primary_tradition",
+          "locator": "Genesis 6:13",
+          "source": "World English Bible Classic — Genesis 6",
+          "stable_identifier": "ebible:eng-web:GEN:6",
+          "license": "Public Domain",
+          "rights_lane": "green",
+          "rights_note": "Public-domain edition; modified text must not be represented as the World English Bible.",
+          "canonical_url": "https://ebible.org/eng-web/GEN06.htm"
+        },
+        {
+          "statement": "Genesis 7:17 reports that the flood continued for forty days and that rising waters lifted the ark.",
+          "class": "chronological_assertion",
+          "role": "primary_tradition",
+          "locator": "Genesis 7:17",
+          "source": "World English Bible Classic — Genesis 7",
+          "stable_identifier": "ebible:eng-web:GEN:7",
+          "license": "Public Domain",
+          "rights_lane": "green",
+          "rights_note": "Public-domain edition; modified text must not be represented as the World English Bible.",
+          "canonical_url": "https://ebible.org/eng-web/GEN07.htm"
+        },
+        {
+          "statement": "Genesis 8:4 reports that the ark came to rest on the mountains of Ararat in the seventh month.",
+          "class": "textual_report",
+          "role": "primary_tradition",
+          "locator": "Genesis 8:4",
+          "source": "World English Bible Classic — Genesis 8",
+          "stable_identifier": "ebible:eng-web:GEN:8",
+          "license": "Public Domain",
+          "rights_lane": "green",
+          "rights_note": "Public-domain edition; modified text must not be represented as the World English Bible.",
+          "canonical_url": "https://ebible.org/eng-web/GEN08.htm"
+        },
+        {
+          "statement": "Genesis 9:11 reports a covenant promise that a flood would not again destroy all flesh.",
+          "class": "textual_report",
+          "role": "primary_tradition",
+          "locator": "Genesis 9:11",
+          "source": "World English Bible Classic — Genesis 9",
+          "stable_identifier": "ebible:eng-web:GEN:9",
+          "license": "Public Domain",
+          "rights_lane": "green",
+          "rights_note": "Public-domain edition; modified text must not be represented as the World English Bible.",
+          "canonical_url": "https://ebible.org/eng-web/GEN09.htm"
+        }
+      ],
+      "sources": [
+        {
+          "title": "World English Bible Classic — Genesis 7",
+          "role": "primary_tradition",
+          "stable_identifier": "ebible:eng-web:GEN:7",
+          "license": "Public Domain",
+          "rights_lane": "green",
+          "rights_note": "Public-domain edition; modified text must not be represented as the World English Bible.",
+          "canonical_url": "https://ebible.org/eng-web/GEN07.htm",
+          "full_text_allowed": true
+        },
+        {
+          "title": "World English Bible Classic — Genesis 8",
+          "role": "primary_tradition",
+          "stable_identifier": "ebible:eng-web:GEN:8",
+          "license": "Public Domain",
+          "rights_lane": "green",
+          "rights_note": "Public-domain edition; modified text must not be represented as the World English Bible.",
+          "canonical_url": "https://ebible.org/eng-web/GEN08.htm",
+          "full_text_allowed": true
+        },
+        {
+          "title": "World English Bible Classic — Genesis 9",
+          "role": "primary_tradition",
+          "stable_identifier": "ebible:eng-web:GEN:9",
+          "license": "Public Domain",
+          "rights_lane": "green",
+          "rights_note": "Public-domain edition; modified text must not be represented as the World English Bible.",
+          "canonical_url": "https://ebible.org/eng-web/GEN09.htm",
+          "full_text_allowed": true
+        },
+        {
+          "title": "World English Bible Classic — Genesis 6",
+          "role": "primary_tradition",
+          "stable_identifier": "ebible:eng-web:GEN:6",
+          "license": "Public Domain",
+          "rights_lane": "green",
+          "rights_note": "Public-domain edition; modified text must not be represented as the World English Bible.",
+          "canonical_url": "https://ebible.org/eng-web/GEN06.htm",
+          "full_text_allowed": true
+        },
+        {
+          "title": "Botanical Evidence of Floods and Paleoflood History",
+          "role": "reference_metadata",
+          "stable_identifier": "https://doi.org/10.1007/978-94-009-3959-2_26",
+          "license": null,
+          "rights_lane": "yellow",
+          "rights_note": "Bibliographic metadata only; publisher work-level rights require review.",
+          "canonical_url": "https://doi.org/10.1007/978-94-009-3959-2_26",
+          "full_text_allowed": false
+        }
+      ]
+    },
+    {
+      "id": "90000000-0000-4000-8000-000000000005",
+      "slug": "sphinx-chronology",
+      "title": "Sphinx Chronology and Erosion Debate",
+      "core_question": "What are the mainstream and alternate chronology arguments concerning the Great Sphinx, and what evidence and objections does each use?",
+      "summary": null,
+      "scope": "Empty editorial shell; no evidence seeded.",
+      "status": "draft",
+      "published_revision": 0,
+      "review_status": "draft",
+      "created_at": "2026-07-17T05:22:34.657Z",
+      "updated_at": "2026-07-17T05:22:34.657Z",
+      "claims": [],
+      "sources": [
+        {
+          "title": "The Geology of the Great Sphinx",
+          "role": "reference_metadata",
+          "stable_identifier": "https://doi.org/10.2307/jj.38271388.14",
+          "license": null,
+          "rights_lane": "yellow",
+          "rights_note": "Bibliographic metadata only; publisher work-level rights require review.",
+          "canonical_url": "https://doi.org/10.2307/jj.38271388.14",
+          "full_text_allowed": false
+        },
+        {
+          "title": "Controlling the Aeolian Erosion of the Great Sphinx",
+          "role": "reference_metadata",
+          "stable_identifier": "https://doi.org/10.2307/1506380",
+          "license": null,
+          "rights_lane": "yellow",
+          "rights_note": "Bibliographic metadata only; publisher work-level rights require review.",
+          "canonical_url": "https://doi.org/10.2307/1506380",
+          "full_text_allowed": false
+        },
+        {
+          "title": "Great Sphinx and ruins of temple, Egypt",
+          "role": "reference_metadata",
+          "stable_identifier": "http://www.loc.gov/item/90713672/",
+          "license": null,
+          "rights_lane": "yellow",
+          "rights_note": "Library metadata staged; item rights statement requires review before media or text publication.",
+          "canonical_url": "http://www.loc.gov/item/90713672/",
+          "full_text_allowed": false
+        }
+      ]
+    },
+    {
+      "id": "90000000-0000-4000-8000-000000000002",
+      "slug": "sumerian-king-list-long-reigns",
+      "title": "Sumerian King List and Long Reigns",
+      "core_question": "How does the King List present antediluvian kingship, reign lengths, flood transition, and later dynasties?",
+      "summary": null,
+      "scope": "Empty editorial shell; no evidence seeded.",
+      "status": "draft",
+      "published_revision": 0,
+      "review_status": "draft",
+      "created_at": "2026-07-17T05:22:34.657Z",
+      "updated_at": "2026-07-17T05:22:34.657Z",
+      "claims": [],
+      "sources": [
+        {
+          "title": "The Divine Appointment of the First Antediluvian King: Newly Recovered Content from the Ur Version of the Sumerian Flood Story",
+          "role": "reference_metadata",
+          "stable_identifier": "https://doi.org/10.5615/jcunestud.70.2018.0037",
+          "license": null,
+          "rights_lane": "yellow",
+          "rights_note": "Bibliographic metadata only; publisher work-level rights require review.",
+          "canonical_url": "https://doi.org/10.5615/jcunestud.70.2018.0037",
+          "full_text_allowed": false
+        },
+        {
+          "title": "The Antediluvian Section of the Sumerian King List and Genesis 5",
+          "role": "reference_metadata",
+          "stable_identifier": "https://doi.org/10.2307/3209665",
+          "license": null,
+          "rights_lane": "yellow",
+          "rights_note": "Bibliographic metadata only; publisher work-level rights require review.",
+          "canonical_url": "https://doi.org/10.2307/3209665",
+          "full_text_allowed": false
+        }
+      ]
+    },
+    {
+      "id": "90000000-0000-4000-8000-000000000009",
+      "slug": "vimanas-sky-vehicles",
+      "title": "Vimanas and Sky-Vehicle Descriptions",
+      "core_question": "Which specific Sanskrit works contain descriptions translated as vimanas or sky vehicles, when were those works composed, and how do the descriptions differ?",
+      "summary": null,
+      "scope": "Empty editorial shell; no evidence seeded.",
+      "status": "draft",
+      "published_revision": 0,
+      "review_status": "draft",
+      "created_at": "2026-07-17T05:22:34.657Z",
+      "updated_at": "2026-07-17T05:22:34.657Z",
+      "claims": [
+        {
+          "statement": "Ganguli's English rendering describes celestials standing in the firmament in their respective spheres and marks the passage with translator note 107.",
+          "class": "translation_observation",
+          "role": "primary_tradition",
+          "locator": "Project Gutenberg ebook #15474, Mahabharata Volume 1 — celestials in the firmament, vimanam note marker, source lines 57032-57045, snapshot 246325dcb896",
+          "source": "The Mahabharata of Krishna-Dwaipayana Vyasa, Volume 1",
+          "stable_identifier": "gutenberg:15474",
+          "license": "Project Gutenberg License / United States public-domain status",
+          "rights_lane": "green",
+          "rights_note": "Embedded license reviewed. Project Gutenberg warns that users outside the United States must check local copyright law.",
+          "canonical_url": "https://www.gutenberg.org/ebooks/15474"
+        },
+        {
+          "statement": "Translator note 107 identifies the original term as 'Vimanam' and glosses it as 'a car.'",
+          "class": "translation_observation",
+          "role": "primary_tradition",
+          "locator": "Project Gutenberg ebook #15474, Mahabharata Volume 1 — translator note 107 on vimanam, source lines 58432-58438, snapshot 246325dcb896",
+          "source": "The Mahabharata of Krishna-Dwaipayana Vyasa, Volume 1",
+          "stable_identifier": "gutenberg:15474",
+          "license": "Project Gutenberg License / United States public-domain status",
+          "rights_lane": "green",
+          "rights_note": "Embedded license reviewed. Project Gutenberg warns that users outside the United States must check local copyright law.",
+          "canonical_url": "https://www.gutenberg.org/ebooks/15474"
+        }
+      ],
+      "sources": [
+        {
+          "title": "The Mahabharata of Krishna-Dwaipayana Vyasa, Volume 1",
+          "role": "primary_tradition",
+          "stable_identifier": "gutenberg:15474",
+          "license": "Project Gutenberg License / United States public-domain status",
+          "rights_lane": "green",
+          "rights_note": "Embedded license reviewed. Project Gutenberg warns that users outside the United States must check local copyright law.",
+          "canonical_url": "https://www.gutenberg.org/ebooks/15474",
+          "full_text_allowed": true
+        },
+        {
+          "title": "The Mahabharata of Krishna-Dwaipayana Vyasa, Volume 1",
+          "role": "reference_metadata",
+          "stable_identifier": "https://www.gutenberg.org/ebooks/15474",
+          "license": null,
+          "rights_lane": "green",
+          "rights_note": "Project Gutenberg catalog metadata is public domain. Review the ebook's embedded license and jurisdiction before importing or publishing edition text.",
+          "canonical_url": "https://www.gutenberg.org/ebooks/15474",
+          "full_text_allowed": false
+        },
+        {
+          "title": "Sacrificial Violence and Textual Battles: Inner Textual Interpretation in the Sanskrit Mahābhārata",
+          "role": "reference_metadata",
+          "stable_identifier": "https://doi.org/10.1086/463672",
+          "license": null,
+          "rights_lane": "yellow",
+          "rights_note": "Bibliographic metadata only; publisher work-level rights require review.",
+          "canonical_url": "https://doi.org/10.1086/463672",
+          "full_text_allowed": false
+        }
+      ]
+    },
+    {
+      "id": "90000000-0000-4000-8000-000000000008",
+      "slug": "watchers-giants-hybrid-beings",
+      "title": "Watchers, Giants, and Hybrid-Beings Motifs",
+      "core_question": "How are Watchers, giants, divine-human unions, and giant traditions described across selected sources?",
+      "summary": null,
+      "scope": "Empty editorial shell; no evidence seeded.",
+      "status": "draft",
+      "published_revision": 0,
+      "review_status": "draft",
+      "created_at": "2026-07-17T05:22:34.657Z",
+      "updated_at": "2026-07-17T05:22:34.657Z",
+      "claims": [
+        {
+          "statement": "Genesis 6:4 in the World English Bible reports Nephilim on the earth in the period when the sons of God came to human daughters.",
+          "class": "textual_report",
+          "role": "primary_tradition",
+          "locator": "Genesis 6:4",
+          "source": "World English Bible Classic — Genesis 6",
+          "stable_identifier": "ebible:eng-web:GEN:6",
+          "license": "Public Domain",
+          "rights_lane": "green",
+          "rights_note": "Public-domain edition; modified text must not be represented as the World English Bible.",
+          "canonical_url": "https://ebible.org/eng-web/GEN06.htm"
+        },
+        {
+          "statement": "The R. H. Charles translation of 1 Enoch 6–7 reports heavenly beings taking wives and offspring described as giants.",
+          "class": "textual_report",
+          "role": "primary_tradition",
+          "locator": "Project Gutenberg ebook #77935, 1 Enoch chapters 6–7 — Watchers and giants, source lines 1090-1123, snapshot 10d325355a81",
+          "source": "The book of Enoch",
+          "stable_identifier": "gutenberg:77935",
+          "license": "Project Gutenberg License / United States public-domain status",
+          "rights_lane": "green",
+          "rights_note": "Embedded license reviewed. Project Gutenberg warns that users outside the United States must check local copyright law.",
+          "canonical_url": "https://www.gutenberg.org/ebooks/77935"
+        }
+      ],
+      "sources": [
+        {
+          "title": "World English Bible Classic — Genesis 6",
+          "role": "primary_tradition",
+          "stable_identifier": "ebible:eng-web:GEN:6",
+          "license": "Public Domain",
+          "rights_lane": "green",
+          "rights_note": "Public-domain edition; modified text must not be represented as the World English Bible.",
+          "canonical_url": "https://ebible.org/eng-web/GEN06.htm",
+          "full_text_allowed": true
+        },
+        {
+          "title": "The book of Enoch",
+          "role": "primary_tradition",
+          "stable_identifier": "gutenberg:77935",
+          "license": "Project Gutenberg License / United States public-domain status",
+          "rights_lane": "green",
+          "rights_note": "Embedded license reviewed. Project Gutenberg warns that users outside the United States must check local copyright law.",
+          "canonical_url": "https://www.gutenberg.org/ebooks/77935",
+          "full_text_allowed": true
+        },
+        {
+          "title": "The book of Enoch",
+          "role": "reference_metadata",
+          "stable_identifier": "https://www.gutenberg.org/ebooks/77935",
+          "license": null,
+          "rights_lane": "green",
+          "rights_note": "Project Gutenberg catalog metadata is public domain. Review the ebook's embedded license and jurisdiction before importing or publishing edition text.",
+          "canonical_url": "https://www.gutenberg.org/ebooks/77935",
+          "full_text_allowed": false
+        },
+        {
+          "title": "The Book of Enoch (Charles)/Chapter 01",
+          "role": "reference_metadata",
+          "stable_identifier": "https://en.wikisource.org/wiki/The_Book_of_Enoch_(Charles)%2FChapter_01",
+          "license": null,
+          "rights_lane": "yellow",
+          "rights_note": "Review the page edition, source scan, and page-level license before passage ingestion; preserve revision and contributor attribution.",
+          "canonical_url": "https://en.wikisource.org/wiki/The_Book_of_Enoch_(Charles)%2FChapter_01",
+          "full_text_allowed": false
+        }
+      ]
+    },
+    {
+      "id": "90000000-0000-4000-8000-000000000006",
+      "slug": "younger-dryas",
+      "title": "Younger Dryas Transition and Catastrophe Hypotheses",
+      "core_question": "What is securely known about the Younger Dryas climate interval, and which proposed causes or human impacts remain debated?",
+      "summary": null,
+      "scope": "Empty editorial shell; no evidence seeded.",
+      "status": "draft",
+      "published_revision": 0,
+      "review_status": "draft",
+      "created_at": "2026-07-17T05:22:34.657Z",
+      "updated_at": "2026-07-17T05:22:34.657Z",
+      "claims": [],
+      "sources": [
+        {
+          "title": "Alaskan Lake Stable Isotope and Geochemistry Data over the last ~15,000 Years",
+          "role": "reference_metadata",
+          "stable_identifier": "https://www.ncei.noaa.gov/access/paleo-search/study/40939",
+          "license": null,
+          "rights_lane": "green",
+          "rights_note": "NOAA study metadata; preserve dataset investigators, methods, and download attribution.",
+          "canonical_url": "https://www.ncei.noaa.gov/access/paleo-search/study/40939",
+          "full_text_allowed": false
+        },
+        {
+          "title": "The Younger Dryas impact hypothesis: Review of the impact evidence",
+          "role": "reference_metadata",
+          "stable_identifier": "https://doi.org/10.1016/j.earscirev.2021.103677",
+          "license": null,
+          "rights_lane": "yellow",
+          "rights_note": "Bibliographic metadata only; publisher work-level rights require review.",
+          "canonical_url": "https://doi.org/10.1016/j.earscirev.2021.103677",
+          "full_text_allowed": false
+        }
+      ]
+    }
+  ]
+}

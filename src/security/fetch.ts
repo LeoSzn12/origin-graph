@@ -1,7 +1,7 @@
 import sanitizeHtml from "sanitize-html";
 import { assertSafeExternalUrl } from "./url-policy";
 
-const maxBytes = 2_000_000;
+const defaultMaxBytes = 2_000_000;
 const maxRedirects = 4;
 
 export interface FetchedMetadata {
@@ -12,13 +12,14 @@ export interface FetchedMetadata {
   content: Uint8Array;
 }
 
-export async function safeFetchMetadata(rawUrl: string): Promise<FetchedMetadata> {
+export async function safeFetchMetadata(rawUrl: string,options:{maxBytes?:number;userAgentPurpose?:string}={}): Promise<FetchedMetadata> {
+  const maxBytes=Math.max(1,Math.min(options.maxBytes??defaultMaxBytes,15_000_000));
   let url = await assertSafeExternalUrl(rawUrl);
   for (let redirects = 0; redirects <= maxRedirects; redirects += 1) {
     const response = await fetch(url, {
       redirect: "manual",
       signal: AbortSignal.timeout(10_000),
-      headers: { "User-Agent": "OriginGraph/0.1 (+source-review; metadata fetch)" }
+      headers: { "User-Agent": `OriginGraph/0.1 (+source-review; ${options.userAgentPurpose??"metadata fetch"})` }
     });
     if (response.status >= 300 && response.status < 400) {
       const location = response.headers.get("location");
@@ -60,4 +61,3 @@ export async function safeFetchMetadata(rawUrl: string): Promise<FetchedMetadata
   }
   throw new Error("FETCH_FAILED: redirect loop");
 }
-

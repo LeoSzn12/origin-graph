@@ -1,5 +1,33 @@
 # Origin Graph implementation report
 
+## Current release candidate — 2026-07-17
+
+This section supersedes the earlier checkpoint narrative below while retaining it as implementation history.
+
+Origin Graph is now a working, authenticated research application across the packet's principal surfaces: governed source discovery and promotion, private upload/URL parsing, review and rights controls, citation-grounded Ask, ten case files, Hypothesis Lab with revisions and triangulation, semantic-band timeline, uncertainty-aware map, typed graph, Sacred Teachers comparison, exports, backups, refresh policy, health endpoint, and an admin data browser.
+
+The current local database contains 25 registered providers (12 enabled/configured), 42 source editions, 488 passages, 38 claims, 31 published non-fixture claims, five explicitly retracted claims retained for audit, 16 public/reviewed chronology assertions, seven native-role assertions, six typed connections, and ten case files. Eight case files contain published pilot claims; Sphinx Chronology and Sumerian King List remain honest bibliographic research leads without fabricated conclusions.
+
+### Current behavioral proof
+
+- Production build: passed, 32 pages generated and all API routes compiled.
+- TypeScript: passed after an isolated dev-type regeneration check.
+- Automated tests: seven files, 24 tests passed, including timeline collision regression coverage.
+- Dependency audit: zero known vulnerabilities at the high threshold.
+- Browser proof: passed the authenticated desktop/mobile route, readiness, console-error, page-error, live provider-search, grounded-Ask, timeline-inspector, Atlantis case-file, and Sacred Teachers journeys.
+- Live Ask proof: a query comparing *Homo sapiens* and *Homo erectus* returns two atomic factual sentences, each tied to an exact PBDB record URL and citation marker.
+- Rights proof: unknown rights remain Yellow; publication guards require an approved edition and exact passage locator; full source snapshots remain private.
+- Data-integrity proof: an incorrect verse-prefix match and non-atomic PBDB claim versions were retracted, not deleted, with replacement claims and audit history.
+- Fresh database proof: migrations `0001` through `0007` apply on a new database with PostGIS, pgvector, and pgcrypto.
+
+### Current source pilot
+
+The reviewed pilot includes 459 exact World English Bible verses; exact line-range excerpts from Project Gutenberg editions of Plato's *Timaeus*, *1 Enoch*, the *Mahabharata*, the *Dhammapada*, the *Analects*, and Rodwell's public-domain English Quran translation; an African Humid Period paper abstract from Crossref; exact PBDB occurrence records; NOAA/WDS paleoclimate coverage; and reviewed Pleiades place records. Library, archive, Wikisource, Wikipedia, and Wikidata connections are discovery/reference inputs, not blanket full-text licenses.
+
+### Release boundary
+
+This is ready for local pilot use, not unrestricted public production. Production still needs managed PostgreSQL/PostGIS/pgvector, private object storage, real identity and roles, secrets, backups/retention, and an editorial owner for rights decisions. The pilot is intentionally bounded and does not contain “all historical texts,” automated platform transcripts, public social features, or a truth-probability score. Credentialed providers remain disabled until keys and source-specific terms are approved.
+
 ## 1. Repository state and branch
 
 - Standalone repository: `/Volumes/Xstorage/Origin Graph/origin-graph`

@@ -35,7 +35,7 @@ export function ResearchGraph(){
           {selector:'edge',style:{'line-color':'#9ba29d','target-arrow-color':'#9ba29d','target-arrow-shape':'triangle','arrow-scale':.7,'curve-style':'bezier','width':1.5,'label':'data(label)','font-size':'8px','color':'#5c6c66','text-background-color':'#f5f2ea','text-background-opacity':.92,'text-background-padding':'3px','text-rotation':'autorotate','overlay-opacity':0}},
           {selector:'edge:selected',style:{'line-color':'#ad4f31','target-arrow-color':'#ad4f31','width':3}}
         ],
-        layout:{name:layout,animate:true,animationDuration:450,padding:70},wheelSensitivity:.2,minZoom:.25,maxZoom:2.5
+        layout:{name:layout,animate:true,animationDuration:450,padding:70},minZoom:.25,maxZoom:2.5
       });
       cyRef.current=cy;
       cy.on('tap','node',(event:any)=>setSelected(event.target.data()));

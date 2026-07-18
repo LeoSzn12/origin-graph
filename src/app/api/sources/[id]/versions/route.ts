@@ -1,0 +1,3 @@
+import { NextResponse } from "next/server";
+import { db } from "@/db";
+export async function GET(_request:Request,context:{params:Promise<{id:string}>}){const {id}=await context.params;const result=await db().query(`SELECT version_group_key FROM source_editions WHERE id=$1`,[id]);if(!result.rows[0])return NextResponse.json({error:{code:"NOT_FOUND",message:"Source not found",details:{}}},{status:404});const versions=await db().query(`SELECT * FROM source_versions WHERE version_group_key=$1 ORDER BY version_number`,[result.rows[0].version_group_key]);return NextResponse.json({versions:versions.rows});}

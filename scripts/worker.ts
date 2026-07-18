@@ -6,8 +6,9 @@ async function main(): Promise<void> {
   loadLocalEnv();
   const pool = createPool();
   try {
-    const processed = await new SourceInputService(pool).processNextInspection(`worker-${process.pid}`);
-    process.stdout.write(processed ? `Processed source input ${processed}\n` : "No inspection jobs queued.\n");
+    const service=new SourceInputService(pool);const workerId=`worker-${process.pid}`;
+    const processed = await service.processNextInspection(workerId) ?? await service.processNextParse(workerId);
+    process.stdout.write(processed ? `Processed source input ${processed}\n` : "No inspection or parse jobs queued.\n");
   } finally { await pool.end(); }
 }
 

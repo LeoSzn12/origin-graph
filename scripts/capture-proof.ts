@@ -8,8 +8,8 @@ function requiredEnv(name: string): string {
   return value;
 }
 
-const username = requiredEnv("ADMIN_AUTH_USER");
-const password = requiredEnv("ADMIN_AUTH_PASSWORD");
+const username = process.env.ADMIN_USERNAME ?? process.env.ADMIN_AUTH_USER ?? requiredEnv("ADMIN_USERNAME");
+const password = process.env.ADMIN_PASSWORD ?? process.env.ADMIN_AUTH_PASSWORD ?? requiredEnv("ADMIN_PASSWORD");
 const baseUrl = process.env.PROOF_BASE_URL ?? "http://127.0.0.1:3100";
 const executablePath = process.env.CHROMIUM_EXECUTABLE;
 
@@ -44,9 +44,11 @@ async function main(): Promise<void> {
     await page.locator(".candidate-list article").first().waitFor({ state: "visible" });
     await page.screenshot({ path: "artifacts/screenshots/data-source-results-desktop.png", fullPage: true });
     await capture(page, "case-files-desktop", "/case-files", "h1");
+    await capture(page, "case-file-atlantis-desktop", "/case-files/atlantis-in-plato", ".case-claim-ledger");
+    await capture(page, "sacred-teachers-desktop", "/sacred-teachers", ".comparison-table");
     await capture(page, "hypothesis-desktop", `/hypotheses/${syntheticIds.hypothesis}`, ".evidence-board");
     await capture(page, "ask-desktop", "/ask", "form");
-    await page.locator(".ask-question-label textarea").fill("synthetic claim");
+    await page.locator(".ask-question-label textarea").fill("What do reviewed editions say about Atlantis in Plato?");
     await page.getByRole("button", { name: /Build evidence packet/ }).click();
     await page.locator(".answer-status-bar").waitFor({ state: "visible" });
     await page.screenshot({ path: "artifacts/screenshots/ask-evidence-desktop.png", fullPage: true });

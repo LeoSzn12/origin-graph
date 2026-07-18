@@ -1,0 +1,9 @@
+import { mkdir,writeFile } from "node:fs/promises";
+import { createPool } from "../src/db";
+import { loadLocalEnv } from "./env";
+
+async function main(){loadLocalEnv();const pool=createPool();try{const cases=await pool.query(`SELECT cf.*,
+  coalesce((SELECT json_agg(json_build_object('statement',c.statement,'class',c.claim_class,'role',c.evidence_role,'locator',p.locator_value,'source',se.title,'stable_identifier',se.stable_identifier,'license',se.license_name,'rights_lane',se.rights_lane,'rights_note',se.rights_note,'canonical_url',se.canonical_url)) FROM case_file_objects cfo JOIN claims c ON cfo.object_type='claim' AND c.id=cfo.object_id JOIN passages p ON p.id=c.passage_id JOIN source_editions se ON se.id=p.source_edition_id WHERE cfo.case_file_id=cf.id AND c.review_status='published'),'[]') AS claims,
+  coalesce((SELECT json_agg(json_build_object('title',se.title,'role',se.evidence_role,'stable_identifier',se.stable_identifier,'license',se.license_name,'rights_lane',se.rights_lane,'rights_note',se.rights_note,'canonical_url',se.canonical_url,'full_text_allowed',se.full_text_publication_allowed)) FROM case_file_objects cfo JOIN source_editions se ON cfo.object_type='source_edition' AND se.id=cfo.object_id WHERE cfo.case_file_id=cf.id),'[]') AS sources
+  FROM case_files cf ORDER BY cf.slug`);const payload={exported_at:new Date().toISOString(),notice:"Research export. Claims are edition-specific; motif similarity is not identity; rights notes travel with every source.",case_files:cases.rows};await mkdir("artifacts/exports",{recursive:true});const path="artifacts/exports/origin-graph-research.json";await writeFile(path,JSON.stringify(payload,null,2),{encoding:"utf8",mode:0o600});process.stdout.write(`${path}\n`);}finally{await pool.end();}}
+main().catch(error=>{process.stderr.write(`${error instanceof Error?error.message:String(error)}\n`);process.exitCode=1;});

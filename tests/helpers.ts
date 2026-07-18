@@ -12,6 +12,7 @@ export async function resetTestData(pool: Pool): Promise<void> {
     throw new Error(`Refusing to reset non-test database: ${database.rows[0].name}`);
   }
   await pool.query(`TRUNCATE TABLE
+    case_file_revisions, source_refresh_policies, case_file_external_records, curation_batches,
     external_records, provider_sync_runs, source_providers,
     request_rate_limits, case_file_queries, hypothesis_revisions, source_impact_suggestions,
     verification_tasks, ingestion_jobs, source_snapshots, source_inputs,

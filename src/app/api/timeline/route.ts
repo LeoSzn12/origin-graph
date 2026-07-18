@@ -19,6 +19,8 @@ export async function GET(request: NextRequest) {
        WHERE coalesce(ti.latest_year,ti.earliest_year,$1) >= $1 AND coalesce(ti.earliest_year,ti.latest_year,$2) <= $2
          AND ($3::text[]='{}' OR ti.lane=ANY($3::text[]))
          AND (NOT $4 OR ti.review_status IN ('approved','published'))
+         AND (ti.source_claim_id IS NULL OR sc.review_status='published')
+         AND ti.title NOT LIKE 'SYNTHETIC%'
        ORDER BY ti.earliest_year NULLS LAST,ti.title LIMIT 1000`, [from, to, lanes, reviewed]);
     return NextResponse.json({ from, to, items: result.rows });
   } catch (error) { return apiError(error); }
