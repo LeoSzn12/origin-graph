@@ -12,7 +12,7 @@ export class DisabledEmbeddingProvider implements EmbeddingProvider {
   async embed(): Promise<null> { return null; }
 }
 
-const stopWords = new Set(["a", "an", "and", "are", "around", "about", "by", "do", "does", "for", "from", "how", "in", "is", "it", "not", "of", "on", "or", "say", "says", "report", "reports", "reported", "record", "records", "describe", "describes", "period", "scientific", "that", "the", "this", "to", "what", "when", "where", "which", "who", "why", "with", "definitely", "exist", "corpus", "reviewed", "edition", "editions", "passage", "passages", "source", "sources", "evidence"]);
+const stopWords = new Set(["a", "an", "and", "are", "around", "about", "actual", "actually", "across", "by", "can", "collapse", "collapsed", "collapsing", "compare", "compared", "comparing", "could", "date", "dates", "definitely", "did", "difference", "differences", "do", "does", "edition", "editions", "evidence", "exist", "family", "families", "for", "from", "happen", "happened", "happening", "happens", "how", "in", "is", "it", "material", "may", "might", "not", "of", "on", "or", "passage", "passages", "real", "really", "record", "records", "report", "reported", "reports", "reviewed", "role", "roles", "sacred", "say", "says", "scientific", "should", "similar", "similarities", "source", "sources", "that", "the", "this", "title", "titles", "to", "tradition", "traditions", "true", "truth", "was", "were", "what", "when", "where", "which", "who", "why", "will", "with", "without", "would"]);
 const expansions: Record<string, string[]> = {
   atlantis: ["timaeus", "critias"], flood: ["deluge", "ark"], floods: ["deluge", "ark"],
   giant: ["giants", "nephilim", "enoch", "watchers"], giants: ["nephilim", "enoch", "watchers"],
@@ -22,7 +22,7 @@ const expansions: Record<string, string[]> = {
   moses: ["exodus", "deuteronomy"], jesus: ["matthew", "luke", "john"],
 };
 
-export function analyzeQuestion(question: string): { intent: QueryIntent; terms: string[] } {
+export function analyzeQuestion(question: string): { intent: QueryIntent; terms: string[]; termGroups: string[][] } {
   const lower = question.toLocaleLowerCase();
   const intent: QueryIntent = /compare|difference|similar/.test(lower) ? "comparison"
     : /when|date|chronolog|timeline/.test(lower) ? "chronology"
@@ -30,10 +30,11 @@ export function analyzeQuestion(question: string): { intent: QueryIntent; terms:
         : /source|edition|citation|passage/.test(lower) ? "source_request"
           : /motif|pattern/.test(lower) ? "motif_search"
             : /hypoth|could|explain/.test(lower) ? "hypothesis_exploration" : "factual_lookup";
-  const base = lower.normalize("NFKD").replace(/[^\p{L}\p{N}]+/gu, " ").split(/\s+/)
-    .filter((term) => term.length > 2 && !stopWords.has(term));
-  const terms = [...new Set(base.flatMap((term) => [term, ...(expansions[term] ?? [])]))].slice(0, 24);
-  return { intent, terms: terms.length ? terms : base.slice(0, 8) };
+  const terms = [...new Set(lower.normalize("NFKD").replace(/[^\p{L}\p{N}]+/gu, " ").split(/\s+/)
+    .filter((term) => term.length > 2 && !stopWords.has(term)))];
+  const boundedTerms = terms.slice(0, 12);
+  const termGroups = boundedTerms.map((term) => [...new Set([term, ...(expansions[term] ?? [])])]);
+  return { intent, terms: boundedTerms, termGroups };
 }
 
 export class PostgresHybridRetriever {
@@ -41,45 +42,46 @@ export class PostgresHybridRetriever {
 
   async retrieveClaimIds(question: string, limit = 48): Promise<{ claimIds: string[]; intent: QueryIntent; embeddingProvider: string }> {
     const analysis = analyzeQuestion(question);
-    const safeTerms = analysis.terms.filter((term) => /^[\p{L}\p{N}]+$/u.test(term));
-    if (!safeTerms.length) return { claimIds: [], intent: analysis.intent, embeddingProvider: this.embeddings.key };
-    const tsQuery = safeTerms.map((term) => `${term}:*`).join(" | ");
+    const safeGroups = analysis.termGroups
+      .map((group) => group.filter((term) => /^[\p{L}\p{N}]+$/u.test(term)))
+      .filter((group) => group.length > 0);
+    if (!safeGroups.length) return { claimIds: [], intent: analysis.intent, embeddingProvider: this.embeddings.key };
+    const tsQuery = safeGroups.map((group) => {
+      const alternatives = group.map((term) => `${term}:*`).join(" | ");
+      return group.length > 1 ? `(${alternatives})` : alternatives;
+    }).join(" & ");
     // The embedding hook is deliberately provider-neutral. V1 remains deterministic when disabled.
     await this.embeddings.embed(question);
     const result = await this.pool.query<{ claim_id: string }>(
       `WITH direct AS (
          SELECT c.id AS claim_id,
-           greatest(ts_rank(c.search_vector, to_tsquery('simple', $1)),
-             ts_rank(p.search_vector, to_tsquery('simple', $1))) + 1.0 AS score
+           ts_rank(search.document, to_tsquery('simple', $1)) + 1.0 AS score
            FROM claims c
            LEFT JOIN passages p ON p.id = c.passage_id
            LEFT JOIN source_editions se ON se.id = p.source_edition_id
-          WHERE c.search_vector @@ to_tsquery('simple', $1)
-             OR p.search_vector @@ to_tsquery('simple', $1)
-             OR EXISTS (SELECT 1 FROM unnest($2::text[]) term WHERE se.title ILIKE '%' || term || '%')
+           CROSS JOIN LATERAL (SELECT to_tsvector('simple', coalesce(c.statement,'') || ' ' || coalesce(se.title,'')) || coalesce(p.search_vector, ''::tsvector) AS document) search
+          WHERE search.document @@ to_tsquery('simple', $1)
        ), case_matches AS (
          SELECT cfo.object_id AS claim_id, 0.72 AS score
            FROM case_files cf JOIN case_file_objects cfo ON cfo.case_file_id = cf.id AND cfo.object_type = 'claim'
-          WHERE EXISTS (SELECT 1 FROM unnest($2::text[]) term
-                         WHERE cf.title ILIKE '%' || term || '%' OR cf.core_question ILIKE '%' || term || '%')
+          WHERE to_tsvector('simple', coalesce(cf.title,'') || ' ' || coalesce(cf.core_question,'')) @@ to_tsquery('simple', $1)
        ), motif_matches AS (
          SELECT con.from_id AS claim_id, 0.62 AS score
            FROM motifs m JOIN connections con ON con.to_type = 'motif' AND con.to_id = m.id AND con.from_type = 'claim'
           WHERE con.review_status IN ('approved','published')
-            AND EXISTS (SELECT 1 FROM unnest($2::text[]) term
-                         WHERE m.label ILIKE '%' || term || '%' OR m.definition ILIKE '%' || term || '%')
+            AND to_tsvector('simple', coalesce(m.label,'') || ' ' || coalesce(m.definition,'')) @@ to_tsquery('simple', $1)
        ), entity_matches AS (
          SELECT c.id AS claim_id, 0.66 AS score
            FROM entities e JOIN claims c ON c.subject_entity_id = e.id
-          WHERE EXISTS (SELECT 1 FROM unnest($2::text[]) term WHERE e.preferred_name ILIKE '%' || term || '%')
+          WHERE to_tsvector('simple', e.preferred_name) @@ to_tsquery('simple', $1)
        ), ranked AS (
          SELECT claim_id, max(score) AS score FROM (
            SELECT * FROM direct UNION ALL SELECT * FROM case_matches
            UNION ALL SELECT * FROM motif_matches UNION ALL SELECT * FROM entity_matches
          ) matches GROUP BY claim_id
        )
-       SELECT claim_id FROM ranked ORDER BY score DESC, claim_id LIMIT $3`,
-      [tsQuery, safeTerms, limit],
+       SELECT claim_id FROM ranked ORDER BY score DESC, claim_id LIMIT $2`,
+      [tsQuery, limit],
     );
     return { claimIds: result.rows.map((row) => row.claim_id), intent: analysis.intent, embeddingProvider: this.embeddings.key };
   }
