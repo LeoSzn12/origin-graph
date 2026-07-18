@@ -6,6 +6,25 @@ interface Claim { id:string; statement:string; claim_class:string }
 interface ElementData { data:{ id:string; object_id?:string; label:string; type?:string; source?:string; target?:string; explanation?:string; confidence?:string } }
 type GraphElements={nodes:ElementData[];edges:ElementData[]};
 
+export function createGraphLifecycle(){
+  let disposed=false;
+  let teardown:(()=>void)|null=null;
+  return {
+    get disposed(){return disposed;},
+    register(nextTeardown:()=>void){
+      if(disposed){nextTeardown();return false;}
+      teardown=nextTeardown;
+      return true;
+    },
+    dispose(){
+      if(disposed)return;
+      disposed=true;
+      teardown?.();
+      teardown=null;
+    }
+  };
+}
+
 export function ResearchGraph(){
   const container=useRef<HTMLDivElement>(null);
   const cyRef=useRef<any>(null);
@@ -19,10 +38,11 @@ export function ResearchGraph(){
   useEffect(()=>{if(focus)fetch(`/api/graph/neighborhood/${focus.type}/${focus.id}`).then(response=>response.json()).then(setElements);},[focus]);
   useEffect(()=>{
     if(!container.current)return;
-    let cy:any;
+    const lifecycle=createGraphLifecycle();
     import('cytoscape').then(({default:cytoscape})=>{
+      if(lifecycle.disposed||!container.current)return;
       const createGraph=cytoscape as any;
-      cy=createGraph({
+      const cy=createGraph({
         container:container.current,
         elements:[...elements.nodes,...elements.edges],
         style:[
@@ -35,14 +55,17 @@ export function ResearchGraph(){
           {selector:'edge',style:{'line-color':'#9ba29d','target-arrow-color':'#9ba29d','target-arrow-shape':'triangle','arrow-scale':.7,'curve-style':'bezier','width':1.5,'label':'data(label)','font-size':'8px','color':'#5c6c66','text-background-color':'#f5f2ea','text-background-opacity':.92,'text-background-padding':'3px','text-rotation':'autorotate','overlay-opacity':0}},
           {selector:'edge:selected',style:{'line-color':'#ad4f31','target-arrow-color':'#ad4f31','width':3}}
         ],
-        layout:{name:layout,animate:true,animationDuration:450,padding:70},minZoom:.25,maxZoom:2.5
+        layout:{name:'preset'},minZoom:.25,maxZoom:2.5
       });
+      const activeLayout=cy.layout({name:layout,animate:true,animationDuration:450,padding:70});
+      lifecycle.register(()=>{activeLayout.stop();cy.stop();cy.destroy();});
       cyRef.current=cy;
       cy.on('tap','node',(event:any)=>setSelected(event.target.data()));
       cy.on('tap','edge',(event:any)=>setSelected(event.target.data()));
       cy.on('dbltap','node',(event:any)=>{const data=event.target.data();if(data.object_id&&data.type)setFocus({type:data.type,id:data.object_id,label:data.label});});
+      activeLayout.run();
     });
-    return()=>{cyRef.current=null;cy?.destroy();};
+    return()=>{cyRef.current=null;lifecycle.dispose();};
   },[elements,layout]);
   function chooseClaim(id:string){const claim=claims.find(item=>item.id===id);if(claim)setFocus({type:'claim',id:claim.id,label:claim.statement});}
   return <div className="graph-workspace">
