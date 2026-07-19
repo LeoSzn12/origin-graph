@@ -1,5 +1,5 @@
 import { describe, expect, it, vi } from "vitest";
-import { createGraphLifecycle } from "@/components/research-graph";
+import { createGraphLifecycle, graphLayoutOptions } from "@/components/research-graph";
 
 describe("research graph lifecycle",()=>{
   it("immediately tears down a graph that resolves after effect cleanup",()=>{
@@ -20,5 +20,13 @@ describe("research graph lifecycle",()=>{
     lifecycle.dispose();
 
     expect(teardown).toHaveBeenCalledOnce();
+  });
+
+  it("uses a synchronous layout so disposal cannot race an animation frame",()=>{
+    expect(graphLayoutOptions("cose")).toEqual({
+      name:"cose",
+      animate:false,
+      padding:70
+    });
   });
 });

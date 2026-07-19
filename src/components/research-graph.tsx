@@ -25,6 +25,10 @@ export function createGraphLifecycle(){
   };
 }
 
+export function graphLayoutOptions(name:string){
+  return {name,animate:false,padding:70};
+}
+
 export function ResearchGraph(){
   const container=useRef<HTMLDivElement>(null);
   const cyRef=useRef<any>(null);
@@ -57,7 +61,10 @@ export function ResearchGraph(){
         ],
         layout:{name:'preset'},minZoom:.25,maxZoom:2.5
       });
-      const activeLayout=cy.layout({name:layout,animate:true,animationDuration:450,padding:70});
+      // Cytoscape's animated layouts can schedule a final frame after React has
+      // disposed the renderer, which makes the callback notify a null renderer.
+      // A synchronous layout keeps route changes and Strict Mode remounts safe.
+      const activeLayout=cy.layout(graphLayoutOptions(layout));
       lifecycle.register(()=>{activeLayout.stop();cy.stop();cy.destroy();});
       cyRef.current=cy;
       cy.on('tap','node',(event:any)=>setSelected(event.target.data()));
