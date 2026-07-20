@@ -4,8 +4,8 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 
 const primaryLinks = [
-  ["/", "Explore"], ["/ask", "Ask evidence"], ["/case-files", "Research files"],
-  ["/hypotheses", "Hypotheses"], ["/sources", "Sources"]
+  ["/", "Explore", "Explore"], ["/ask", "Ask evidence", "Ask"], ["/case-files", "Research files", "Research"],
+  ["/hypotheses", "Hypotheses", "Hypotheses"], ["/sources", "Sources", "Sources"]
 ] as const;
 
 const toolLinks = [
@@ -22,7 +22,7 @@ export function AppNav() {
   const toolsActive=toolLinks.some(([href])=>isActive(href));
   return <header className="app-nav">
     <Link href="/" className="app-logo" aria-label="Origin Graph home"><span>OG</span><b>Origin Graph</b></Link>
-    <nav aria-label="Primary navigation">{primaryLinks.map(([href,label]) => <Link key={href} href={href} className={isActive(href)?"active":""}>{label}</Link>)}</nav>
+    <nav aria-label="Primary navigation">{primaryLinks.map(([href,label,shortLabel]) => <Link key={href} href={href} aria-label={label} className={isActive(href)?"active":""}><span className="nav-full-label">{label}</span><span className="nav-short-label" aria-hidden="true">{shortLabel}</span></Link>)}</nav>
     <details className={`tools-menu ${toolsActive?"active":""}`}><summary>Tools</summary><div>{toolLinks.map(([href,label,description])=><Link href={href} key={href} className={isActive(href)?"active":""}><b>{label}</b><span>{description}</span></Link>)}</div></details>
     <Link href="/sources/new" className="nav-action">Add source</Link>
   </header>;

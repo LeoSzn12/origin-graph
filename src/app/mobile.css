@@ -1,0 +1,21 @@
+@media (max-width: 760px) {
+  .app-nav nav {
+    justify-content: space-between;
+    overflow-x: visible;
+  }
+
+  .app-nav nav a {
+    min-width: 0;
+    padding: 0 .18rem;
+    font-size: .64rem;
+  }
+
+  .nav-full-label { display: none; }
+  .nav-short-label { display: inline; }
+}
+
+.nav-short-label { display: none; }
+
+@media (max-width: 760px) {
+  .nav-short-label { display: inline; }
+}
