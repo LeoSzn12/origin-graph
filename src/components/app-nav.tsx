@@ -5,7 +5,7 @@ import { usePathname } from "next/navigation";
 
 const primaryLinks = [
   ["/", "Explore", "Explore"], ["/ask", "Ask evidence", "Ask"], ["/case-files", "Research files", "Research"],
-  ["/hypotheses", "Hypotheses", "Hypotheses"], ["/sources", "Sources", "Sources"]
+  ["/hypotheses", "Hypotheses", "Hypotheses"], ["/sources", "Sources", "Sources"], ["/game", "Evidence game", "Play"]
 ] as const;
 
 const toolLinks = [

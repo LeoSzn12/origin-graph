@@ -12,3 +12,4 @@ test-results/
 /storage/
 artifacts/backups/
 .gstack/
+.playwright-cli/
