@@ -1,7 +1,12 @@
 import { NextResponse } from "next/server";
 import { z } from "zod";
 import { db } from "@/db";
-import { ATLANTIS_ROUNDS, buildAtlantisProfile, gradeEvidenceGame, type EvidenceGameChallenge } from "@/domain/evidence-game";
+import {
+  ATLANTIS_ROUNDS,
+  buildAtlantisProfile,
+  gradeEvidenceGame,
+  type EvidenceGameChallenge,
+} from "@/domain/evidence-game";
 import { apiError } from "@/http";
 
 type AtlantisPacket = {
@@ -22,8 +27,8 @@ const answerSchema = z.object({
     inference: z.string().optional(),
     independence: z.string().optional(),
     chronology: z.string().optional(),
-    "next-evidence": z.string().optional()
-  })
+    "next-evidence": z.string().optional(),
+  }),
 });
 
 async function loadAtlantisPacket() {
@@ -44,7 +49,7 @@ async function loadAtlantisPacket() {
        WHERE cfo.case_file_id=cf.id AND c.review_status='published'
        ORDER BY c.created_at LIMIT 1
      ) citation ON true
-     WHERE cf.slug='atlantis-in-plato'`
+     WHERE cf.slug='atlantis-in-plato'`,
   );
   return result.rows[0];
 }
@@ -52,19 +57,36 @@ async function loadAtlantisPacket() {
 export async function GET() {
   const packet = await loadAtlantisPacket();
   if (!packet) {
-    return NextResponse.json({ error: { code: "NOT_FOUND", message: "The Atlantis case file is unavailable.", details: {} } }, { status: 404 });
+    return NextResponse.json(
+      {
+        error: {
+          code: "NOT_FOUND",
+          message: "The Atlantis case file is unavailable.",
+          details: {},
+        },
+      },
+      { status: 404 },
+    );
   }
 
   const citation = {
     label: packet.source_title ?? "Reviewed primary source",
     locator: packet.locator_value ?? "Exact locator unavailable",
-    href: packet.source_id ? `/sources/${packet.source_id}` : "/case-files/atlantis-in-plato"
+    href: packet.source_id
+      ? `/sources/${packet.source_id}`
+      : "/case-files/atlantis-in-plato",
   };
   const challenge: EvidenceGameChallenge = {
     id: "atlantis-source-criticism",
+    slug: "atlantis",
+    caseNumber: "001",
     title: packet.title,
     question: "Can the reviewed evidence establish a historical Atlantis?",
     deckLabel: "Starter investigation · 4 rounds",
+    era: "Classical text · deep-time claim",
+    region: "Mediterranean",
+    difficulty: "Starter",
+    accent: "night",
     caseFileHref: "/case-files/atlantis-in-plato",
     reviewedClaimCount: packet.reviewed_claim_count,
     reviewedSourceCount: packet.reviewed_source_count,
@@ -75,8 +97,8 @@ export async function GET() {
       reviewedClaimCount: packet.reviewed_claim_count,
       reviewedSourceCount: packet.reviewed_source_count,
       discoveryLeadCount: packet.discovery_lead_count,
-      physicalEvidenceCount: packet.physical_evidence_count
-    })
+      physicalEvidenceCount: packet.physical_evidence_count,
+    }),
   };
   return NextResponse.json({ challenge });
 }
@@ -84,7 +106,9 @@ export async function GET() {
 export async function POST(request: Request) {
   try {
     const { answers } = answerSchema.parse(await request.json());
-    return NextResponse.json({ result: gradeEvidenceGame(answers) });
+    return NextResponse.json({
+      result: gradeEvidenceGame(answers, "atlantis-source-criticism"),
+    });
   } catch (error) {
     return apiError(error);
   }
