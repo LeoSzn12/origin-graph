@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import "./styles.css";
 import "./premium.css";
+import "./mobile.css";
+import "./game.css";
 import "maplibre-gl/dist/maplibre-gl.css";
 import { AppNav } from "@/components/app-nav";
 

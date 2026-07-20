@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useState, type FormEvent } from "react";
+import { useEffect, useMemo, useState, type FormEvent, type KeyboardEvent } from "react";
 import Link from "next/link";
 import { scaleLinear } from "d3-scale";
 
@@ -48,6 +48,7 @@ export function TimelineWorkspace() {
   const lanes = useMemo(() => [...new Set(filteredItems.map((item) => item.lane))], [filteredItems]);
   const scale = useMemo(() => scaleLinear().domain([band.from,band.to]).range([2,98]), [band.from,band.to]);
   async function ask(event: FormEvent) { event.preventDefault(); if (!question.trim()) return; setAsking(true); const response = await fetch("/api/ask", { method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({question}) }); setAskResult(await response.json()); setAsking(false); }
+  function selectTableItem(event: KeyboardEvent<HTMLTableRowElement>, item: TimelineItem) { if (event.key === "Enter" || event.key === " ") { event.preventDefault(); setSelected(item); } }
   const answerStatus=askResult?.answer_status==="grounded"?"Strong reviewed coverage":askResult?.answer_status==="partial"?"Limited reviewed coverage":"No reviewed match";
   return <main className="timeline-page">
     <section className="timeline-hero"><div><p className="eyebrow">Explore the reviewed chronology</p><h1>History,<br/>with every date in context.</h1><p className="timeline-intro">Compare traditions, scientific observations, physical witnesses, and historical claims without pretending they are the same kind of evidence.</p></div><form className="canvas-ask" onSubmit={ask}><label htmlFor="timeline-question">Quick evidence check</label><p>Ask a question here, or use <Link href="/ask">Ask evidence</Link> for filters, evidence groups, and full citations.</p><div><input id="timeline-question" value={question} onChange={(event) => setQuestion(event.target.value)} placeholder="What evidence exists for…"/><button disabled={asking}>{asking ? "Checking…" : "Check"}</button></div></form></section>
@@ -58,6 +59,6 @@ export function TimelineWorkspace() {
       <div className="axis"><span>{displayYear(band.from)}</span><span>{displayYear((band.from+band.to)/2)}</span><span>{displayYear(band.to)}</span></div>
     </section>
     {selected&&<aside className="timeline-inspector"><header><span className="eyebrow">{selected.role.replaceAll('_',' ')}</span><button onClick={()=>setSelected(null)}>Close</button></header><h2>{selected.title}</h2><p>{selected.display_label}</p><dl><div><dt>Interval</dt><dd>{displayYear(selected.earliest_year)} — {displayYear(selected.latest_year)}</dd></div><div><dt>Confidence</dt><dd>{selected.confidence}</dd></div><div><dt>Tradition / culture</dt><dd>{selected.tradition??selected.culture??'Not assigned'}</dd></div><div><dt>Source</dt><dd>{selected.source_title??'Source claim not linked'}</dd></div><div><dt>Exact locator</dt><dd>{selected.locator_value?`${selected.locator_type}: ${selected.locator_value}`:'No source locator linked'}</dd></div></dl>{selected.source_edition_id&&<a href={`/sources/${selected.source_edition_id}`}>Open source card</a>}</aside>}
-    <section className="timeline-table-section"><div className="section-heading"><div><p className="section-index">Accessible view</p><h2>Chronology records</h2></div><p>Same filtered data as the visual canvas.</p></div><div className="table-wrap"><table><thead><tr><th>Object</th><th>Date role</th><th>Earliest</th><th>Latest</th><th>Confidence</th></tr></thead><tbody>{filteredItems.map((item) => <tr key={item.temporal_assertion_id} onClick={()=>setSelected(item)}><td><strong>{item.title}</strong><small>{item.display_label}</small></td><td>{item.role.replaceAll("_"," ")}</td><td>{displayYear(item.earliest_year)}</td><td>{displayYear(item.latest_year)}</td><td>{item.confidence}</td></tr>)}</tbody></table></div></section>
+    <section className="timeline-table-section"><div className="section-heading"><div><p className="section-index">Accessible view</p><h2>Chronology records</h2></div><p>Same filtered data as the visual canvas. Swipe horizontally on small screens.</p></div><div className="table-wrap"><table><thead><tr><th>Object</th><th>Date role</th><th>Earliest</th><th>Latest</th><th>Confidence</th></tr></thead><tbody>{filteredItems.map((item) => <tr key={item.temporal_assertion_id} tabIndex={0} onClick={()=>setSelected(item)} onKeyDown={(event)=>selectTableItem(event,item)}><td><strong>{item.title}</strong><small>{item.display_label}</small></td><td>{item.role.replaceAll("_"," ")}</td><td>{displayYear(item.earliest_year)}</td><td>{displayYear(item.latest_year)}</td><td>{item.confidence}</td></tr>)}</tbody></table></div></section>
   </main>;
 }

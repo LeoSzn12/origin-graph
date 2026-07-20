@@ -20,6 +20,7 @@ const expansions: Record<string, string[]> = {
   weapon: ["weapons", "astra", "arjuna"], weapons: ["astra", "arjuna"],
   teacher: ["rabbi", "prophet", "sage"], teachers: ["rabbi", "prophet", "sage"],
   moses: ["exodus", "deuteronomy"], jesus: ["matthew", "luke", "john"],
+  mahabharata: ["bharata", "arjuna", "pandava", "kaurava", "kurukshetra", "hastinapura"],
 };
 
 export function analyzeQuestion(question: string): { intent: QueryIntent; terms: string[]; termGroups: string[][] } {
@@ -46,7 +47,12 @@ export class PostgresHybridRetriever {
       .map((group) => group.filter((term) => /^[\p{L}\p{N}]+$/u.test(term)))
       .filter((group) => group.length > 0);
     if (!safeGroups.length) return { claimIds: [], intent: analysis.intent, embeddingProvider: this.embeddings.key };
-    const tsQuery = safeGroups.map((group) => {
+    // When a recognized work/topic is present, question framing and location
+    // terms are soft context. Requiring every word would turn “Did the
+    // Mahabharata really take place in India?” into an impossible exact match.
+    const topicGroups = safeGroups.filter((group) => group.some((term) => (expansions[term] ?? []).length > 0));
+    const queryGroups = topicGroups.length ? topicGroups : safeGroups;
+    const tsQuery = queryGroups.map((group) => {
       const alternatives = group.map((term) => `${term}:*`).join(" | ");
       return group.length > 1 ? `(${alternatives})` : alternatives;
     }).join(" & ");

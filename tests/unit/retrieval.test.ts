@@ -23,6 +23,14 @@ describe("Ask retrieval precision", () => {
     expect(query.mock.calls[0][1][0]).toBe("(atlantis:* | timaeus:* | critias:*)");
   });
 
+  it("treats Mahabharata historicity questions as topic searches", async () => {
+    const query = vi.fn().mockResolvedValue({ rows: [] });
+    const pool = { query } as unknown as Pool;
+
+    await new PostgresHybridRetriever(pool).retrieveClaimIds("Did the Mahabharata really take place in India?");
+    expect(query.mock.calls[0][1][0]).toBe("(mahabharata:* | bharata:* | arjuna:* | pandava:* | kaurava:* | kurukshetra:* | hastinapura:*)");
+  });
+
   it("does not turn comparison framing into required historical concepts", () => {
     expect(analyzeQuestion("Compare reported sacred-teacher roles without collapsing traditions").terms)
       .toEqual(["teacher"]);

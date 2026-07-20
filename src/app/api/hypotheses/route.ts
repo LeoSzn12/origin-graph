@@ -12,6 +12,7 @@ export async function GET() {
       count(ei.id) FILTER (WHERE ei.stance='supports')::int AS support_count,
       count(ei.id) FILTER (WHERE ei.stance='challenges')::int AS challenge_count
      FROM hypotheses h LEFT JOIN evidence_items ei ON ei.hypothesis_id=h.id
+     WHERE h.slug NOT LIKE 'synthetic-%'
      GROUP BY h.id ORDER BY h.updated_at DESC`);
   return NextResponse.json({ hypotheses: result.rows });
 }
@@ -23,4 +24,3 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ id }, { status: 201 });
   } catch (error) { return apiError(error); }
 }
-

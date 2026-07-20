@@ -4,6 +4,8 @@ import { migrate } from "../../scripts/migrate";
 import { AskService } from "@/research/ask-service";
 import { SourceInputService } from "@/ingestion/source-input-service";
 import { ProviderService } from "@/connectors/provider-service";
+import { GET as listHypotheses } from "@/app/api/hypotheses/route";
+import { GET as listHypothesisClaims } from "@/app/api/hypotheses/claim-options/route";
 import { resetTestData,testPool } from "../helpers";
 
 let pool:Pool;
@@ -55,5 +57,12 @@ describe("research workspace",()=>{
     const editionId=await service.promote(id,"tester");
     const edition=await pool.query("SELECT review_status,rights_lane,publication_allowed FROM source_editions WHERE id=$1",[editionId]);
     expect(edition.rows[0]).toEqual({review_status:"draft",rights_lane:"yellow",publication_allowed:false});
+  });
+
+  it("keeps synthetic fixtures out of researcher-facing hypothesis APIs",async()=>{
+    const hypotheses=await listHypotheses().then(response=>response.json());
+    const claimOptions=await listHypothesisClaims().then(response=>response.json());
+    expect(hypotheses.hypotheses).toEqual([]);
+    expect(claimOptions.claims.every((claim:{statement:string})=>!claim.statement.startsWith("SYNTHETIC"))).toBe(true);
   });
 });
