@@ -24,6 +24,10 @@
 .timeline-intro{max-width:720px;margin:1.6rem 0 0;color:var(--muted);font-size:1rem;line-height:1.65}.canvas-ask>p{margin:0 0 .6rem;color:var(--muted);font-size:.7rem;line-height:1.45}.canvas-ask>p a{color:var(--ink);font-weight:800}.timeline-how{display:grid;grid-template-columns:repeat(3,1fr);padding:0;margin:0 0 2rem;border-top:1px solid var(--line);border-bottom:1px solid var(--line);list-style:none}.timeline-how li{display:grid;gap:.3rem;padding:.9rem}.timeline-how li+li{border-left:1px solid var(--line)}.timeline-how b{font-size:.7rem}.timeline-how span{color:var(--muted);font-size:.64rem}.ask-overlay-link{display:inline-block;margin-top:1rem;color:var(--ink);font-size:.72rem;font-weight:800}
 @media(max-width:700px){.timeline-how{grid-template-columns:1fr}.timeline-how li+li{border-left:0;border-top:1px solid var(--line)}}
 
+/* Empty review queues still explain the next useful action. */
+.review-loading{padding:2rem .5rem;color:var(--muted);font-size:.75rem}
+.review-empty{padding:clamp(2rem,6vw,5rem) 0;border-bottom:1px solid var(--line)}.review-empty h2{font-size:clamp(2rem,5vw,4rem);margin:.35rem 0 .8rem}.review-empty>p:not(.eyebrow){max-width:650px;color:var(--muted);line-height:1.6}.review-empty>div{display:flex;gap:.7rem;margin-top:1.3rem}
+
 /* Graph controls must never inherit a long option's intrinsic width. */
 .graph-toolbar{display:grid;grid-template-columns:minmax(0,1fr) auto auto}.graph-toolbar>label{min-width:0}.graph-toolbar select{width:100%;min-width:0;max-width:100%}.graph-toolbar>button:last-child{margin-left:0}
 @media(max-width:1100px){.graph-toolbar{grid-template-columns:minmax(0,1fr)}.graph-toolbar>div{overflow-x:auto}.graph-toolbar>button:last-child{width:100%}}
