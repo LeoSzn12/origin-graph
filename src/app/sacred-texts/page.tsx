@@ -55,7 +55,7 @@ export default function SacredTextsPage(){
 
     {message&&<p className="error-box">{message}</p>}
     {result&&<section className="sacred-results">
-      <header><div><p className="eyebrow">Comparison packet</p><h2>{result.total} matching passages across {result.traditions_represented.length} traditions</h2></div>
+      <header><div><p className="eyebrow">Comparison packet</p><h2>{result.total} matching passages across {result.traditions_represented.length} text {result.traditions_represented.length===1?"group":"groups"}</h2></div>
         <div className={`similarity-grade ${result.query.suggested_grade}`}>{result.query.suggested_grade.replaceAll("_"," ")}</div></header>
       {result.query.note&&<p className="sacred-query-note">{result.query.note}</p>}
       {!result.total&&<div className="sacred-empty"><h3>No reviewed passage matched yet.</h3><p>The catalog may still be awaiting import or review. The app will not manufacture a parallel from unrelated wording.</p></div>}
