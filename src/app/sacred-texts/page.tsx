@@ -21,9 +21,12 @@ export default function SacredTextsPage(){
   }).catch(()=>setMessage("Could not load the sacred-text catalog."));},[]);
 
   function toggle(value:string,current:string[],set:(next:string[])=>void){set(current.includes(value)?current.filter(item=>item!==value):[...current,value]);}
-  async function search(event?:FormEvent,requestedQuery=query){event?.preventDefault();setLoading(true);setMessage("");
+  async function search(event?:FormEvent,requestedQuery=query){event?.preventDefault();
+    const normalizedQuery=requestedQuery.trim();
+    if(normalizedQuery.length<2){setResult(null);setMessage("Enter at least 2 characters to compare.");return;}
+    setLoading(true);setMessage("");
     try{
-      const response=await fetch("/api/sacred-texts/search",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({query:requestedQuery,filters:{traditions,canons,editions,limit:12}})});
+      const response=await fetch("/api/sacred-texts/search",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({query:normalizedQuery,filters:{traditions,canons,editions,limit:12}})});
       const contentType=response.headers.get("content-type")??"";const data=contentType.includes("application/json")?await response.json():{error:{message:await response.text()}};
       if(response.ok)setResult(data);else setMessage(data.error?.message??"Search failed.");
     }catch{setMessage("Search failed. Check the local database connection and try again.");}
