@@ -15,6 +15,9 @@
     "db:migrate": "tsx scripts/migrate.ts up",
     "db:rollback": "tsx scripts/migrate.ts down",
     "db:seed": "tsx scripts/seed.ts",
+    "sacred:seed-catalog": "tsx scripts/seed-sacred-catalog.ts",
+    "sacred:import": "tsx scripts/import-sacred-corpus.ts",
+    "sacred:scan": "tsx scripts/scan-sacred-motifs.ts",
     "db:counts": "tsx scripts/counts.ts",
     "db:backup": "tsx scripts/backup.ts",
     "research:export": "tsx scripts/export-research.ts",
@@ -34,8 +37,9 @@
     "cytoscape": "^3.34.0",
     "d3-array": "^3.2.4",
     "d3-scale": "^4.0.2",
+    "fflate": "^0.8.2",
     "maplibre-gl": "^5.24.0",
-    "next": "16.2.10",
+    "next": "16.2.11",
     "pdfjs-dist": "^5.7.284",
     "pg": "8.22.0",
     "react": "19.2.0",
@@ -58,6 +62,7 @@
     "vitest": "4.1.10"
   },
   "overrides": {
-    "postcss": "8.5.10"
+    "postcss": "8.5.12",
+    "sharp": "0.35.0"
   }
 }

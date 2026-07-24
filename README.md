@@ -30,6 +30,7 @@ The Data Sources screen exposes 25 governed providers. Ten have bounded no-key/r
 - `/case-files` — ten editorial research files; eight currently contain reviewed pilot claims and all ten retain approved source leads
 - `/hypotheses` — private reversible evidence boards and exports
 - `/sacred-teachers` — accessible native-role comparison for Moses, Jesus, Muhammad, the Buddha, and Confucius
+- `/sacred-texts` — canon- and edition-aware search across the Torah/Tanakh, Christian Bible, Quran, Bhagavad Gita, and separately labeled related texts
 - `/map` — reviewed geometry with literary-place suppression and sensitive-site generalization
 - `/graph` — focused typed neighborhoods, not a hairball
 - `/admin` — read-only data browser

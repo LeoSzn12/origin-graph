@@ -7,6 +7,10 @@ The repository now contains a bounded real-source pilot in addition to labeled s
 | Source family | Material used | Rights/publication treatment |
 | --- | --- | --- |
 | World English Bible | 459 exact verses from selected chapters | Public-domain edition; exact locators, hashes, and stable source URLs retained |
+| World English Bible Protestant and Catholic USFM packages | Full-edition importers for 66- and 73-book public-domain editions | Downloaded source archives are hashed; faithful text requirement and edition labels retained |
+| JPS TaNaKH 1917 | Full public-domain Tanakh USFM package | Jewish edition identity, traditional canon grouping, exact verse locators, and source URL retained |
+| Tanzil Uthmani Quran | 6,236 Arabic ayahs | Verbatim-only redistribution; Tanzil attribution and link are mandatory; no text normalization |
+| Rodwell Quran / Arnold Bhagavad Gita / Charles 1 Enoch | Complete public-domain US Project Gutenberg source files | Historical translations; exact edition and jurisdiction notes retained |
 | Project Gutenberg | Exact line ranges from selected public-domain US editions of *Timaeus*, *1 Enoch*, *Mahabharata*, *Dhammapada*, *Analects*, and Rodwell's Quran translation | Edition-specific Gutenberg notices and URLs retained; downstream users must consider their jurisdiction |
 | Crossref | DOI metadata and a reviewed paper abstract | Metadata/abstract only; no publisher full text copied |
 | PBDB | Two exact occurrence API records | Record URL, collection/reference identifiers, intervals, and age uncertainty retained |
