@@ -1,4 +1,5 @@
 import type { Pool } from "pg";
+import { buildSacredSensemaking, type SacredCoverage, type SacredCoverageGroup } from "@/sacred-texts/sensemaking";
 
 export type SimilarityGrade =
   | "direct_textual_relationship"
@@ -97,10 +98,14 @@ export class SacredTextSearchService {
 
   async search(query:string,filters:SacredSearchFilters={}){
     const analysis=analyzeSacredQuery(query);
-    if(!analysis.terms.length)return{query:analysis,total:0,traditions_represented:[],results:[]};
+    if(!analysis.terms.length){
+      const coverage:SacredCoverage={matching_passages:0,distinct_references:0,shown_passages:0,text_groups_with_matches:0,groups:[]};
+      return{query:analysis,total:0,shown_total:0,coverage,sensemaking:buildSacredSensemaking({normalizedQuery:analysis.normalized,concept:analysis.concept,coverage}),traditions_represented:[],results:[]};
+    }
     const limitPerTradition=Math.max(1,Math.min(filters.limit??12,25));
     const patterns=analysis.terms.map(term=>`%${term}%`);
-    const result=await this.pool.query(
+    const sharedParameters=[patterns,filters.traditions??[],filters.editions??[],filters.canons??[]];
+    const [result,coverageResult]=await Promise.all([this.pool.query(
       `WITH candidates AS (
         SELECT p.id AS passage_id,st.sort_order AS tradition_sort,coalesce(sb.default_order,999) AS book_sort,
           psr.reference_sort_key,
@@ -149,14 +154,61 @@ export class SacredTextSearchService {
       JOIN sacred_traditions st ON st.key=txt.tradition_key
       LEFT JOIN sacred_books sb ON sb.key=psr.sacred_book_key
       ORDER BY chosen.tradition_sort,chosen.book_sort,chosen.reference_sort_key`,
-      [patterns,filters.traditions??[],filters.editions??[],filters.canons??[],`%${analysis.normalized}%`,limitPerTradition]
-    );
+      [...sharedParameters,`%${analysis.normalized}%`,limitPerTradition]
+    ),this.pool.query(
+      `SELECT st.key,st.label,st.sort_order,
+        count(DISTINCT p.id)::int AS matching_passages,
+        count(DISTINCT concat_ws(':',psr.sacred_book_key,psr.normalized_reference))::int AS distinct_references,
+        count(DISTINCT sep.edition_key)::int AS editions
+      FROM passages p
+      JOIN source_editions se ON se.id=p.source_edition_id
+      JOIN sacred_edition_profiles sep ON sep.source_edition_id=se.id AND sep.searchable
+      JOIN passage_sacred_references psr ON psr.passage_id=p.id
+      JOIN sacred_texts txt ON txt.key=psr.sacred_text_key
+      JOIN sacred_traditions st ON st.key=txt.tradition_key
+      WHERE p.review_status IN ('approved','published')
+        AND (coalesce(p.original_text,'') ILIKE ANY($1::text[])
+          OR coalesce(p.transliteration,'') ILIKE ANY($1::text[])
+          OR coalesce(p.translation_text,'') ILIKE ANY($1::text[])
+          OR coalesce(p.safe_summary,'') ILIKE ANY($1::text[]))
+        AND ($2::text[]='{}' OR st.key=ANY($2::text[]))
+        AND ($3::text[]='{}' OR sep.edition_key=ANY($3::text[]))
+        AND ($4::text[]='{}' OR EXISTS (
+          SELECT 1 FROM sacred_canon_books filter_scb
+          WHERE filter_scb.sacred_book_key=psr.sacred_book_key AND filter_scb.canon_key=ANY($4::text[])
+        ))
+      GROUP BY st.key,st.label,st.sort_order
+      ORDER BY st.sort_order`,
+      sharedParameters
+    )]);
     const results=result.rows.map(row=>{
       const fullText=String(row.translation_text??row.original_text??row.safe_summary??"");
       const excerpt=sacredMatchExcerpt(fullText,analysis.terms);
       return{...row,display_excerpt:excerpt.text,matched_terms:excerpt.matched_terms};
     });
     const represented=[...new Map(results.map(row=>[row.tradition_key,{key:row.tradition_key,label:row.tradition_label}])).values()];
-    return{query:analysis,total:result.rowCount,traditions_represented:represented,results};
+    const groups=coverageResult.rows.map(row=>({
+      key:String(row.key),
+      label:String(row.label),
+      matching_passages:Number(row.matching_passages),
+      distinct_references:Number(row.distinct_references),
+      editions:Number(row.editions)
+    })) satisfies SacredCoverageGroup[];
+    const coverage:SacredCoverage={
+      matching_passages:groups.reduce((sum,group)=>sum+group.matching_passages,0),
+      distinct_references:groups.reduce((sum,group)=>sum+group.distinct_references,0),
+      shown_passages:result.rowCount??0,
+      text_groups_with_matches:groups.length,
+      groups
+    };
+    return{
+      query:analysis,
+      total:coverage.matching_passages,
+      shown_total:coverage.shown_passages,
+      coverage,
+      sensemaking:buildSacredSensemaking({normalizedQuery:analysis.normalized,concept:analysis.concept,coverage}),
+      traditions_represented:represented,
+      results
+    };
   }
 }
