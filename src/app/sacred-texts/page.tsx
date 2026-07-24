@@ -21,9 +21,9 @@ export default function SacredTextsPage(){
   }).catch(()=>setMessage("Could not load the sacred-text catalog."));},[]);
 
   function toggle(value:string,current:string[],set:(next:string[])=>void){set(current.includes(value)?current.filter(item=>item!==value):[...current,value]);}
-  async function search(event?:FormEvent){event?.preventDefault();setLoading(true);setMessage("");
+  async function search(event?:FormEvent,requestedQuery=query){event?.preventDefault();setLoading(true);setMessage("");
     try{
-      const response=await fetch("/api/sacred-texts/search",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({query,filters:{traditions,canons,editions,limit:12}})});
+      const response=await fetch("/api/sacred-texts/search",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({query:requestedQuery,filters:{traditions,canons,editions,limit:12}})});
       const contentType=response.headers.get("content-type")??"";const data=contentType.includes("application/json")?await response.json():{error:{message:await response.text()}};
       if(response.ok)setResult(data);else setMessage(data.error?.message??"Search failed.");
     }catch{setMessage("Search failed. Check the local database connection and try again.");}
@@ -42,7 +42,7 @@ export default function SacredTextsPage(){
       <label>Search for a word, story, being, or idea
         <div><input value={query} onChange={event=>setQuery(event.target.value)} placeholder="Try: flood, giants, resurrection, heavenly beings…"/><button disabled={loading}>{loading?"Searching…":"Compare texts"}</button></div>
       </label>
-      <div className="sacred-examples">{examples.map(example=><button type="button" key={example} onClick={()=>setQuery(example)}>{example}</button>)}</div>
+      <div className="sacred-examples">{examples.map(example=><button type="button" key={example} onClick={()=>{setQuery(example);void search(undefined,example);}}>{example}</button>)}</div>
       <details>
         <summary>Choose traditions, canons, or translations</summary>
         <div className="sacred-filter-grid">
