@@ -13,7 +13,14 @@ describe("sacred text query analysis",()=>{
     const result=analyzeSacredQuery("aliens");
     expect(result.suggested_grade).toBe("speculative_interpretation");
     expect(result.terms).toEqual(expect.arrayContaining(["angel","jinn","deva","vimana"]));
+    expect(result.terms).not.toContain("aliens");
     expect(result.note).toMatch(/speculative/i);
+  });
+
+  it.each(["alien","extraterrestrial beings","UFOs"])("maps %s to the cautious celestial-being concept",query=>{
+    const result=analyzeSacredQuery(query);
+    expect(result.concept).toBe("aliens");
+    expect(result.terms).not.toEqual(expect.arrayContaining(["alien","aliens","extraterrestrial","ufos"]));
   });
 
   it("keeps an unknown query bounded and searchable",()=>{

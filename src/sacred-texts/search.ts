@@ -26,8 +26,10 @@ export function analyzeSacredQuery(query:string):{
   note:string|null;
 }{
   const normalized=query.trim().toLocaleLowerCase().normalize("NFKD").replace(/[^\p{L}\p{N}\s'-]+/gu," ").replace(/\s+/g," ");
-  const concept=Object.keys(conceptVocabulary).find(key=>normalized===key||normalized.includes(key))??null;
-  const rawTerms=normalized.split(/\s+/).filter(term=>term.length>2);
+  const words=normalized.split(/\s+/);
+  const concept=Object.keys(conceptVocabulary).find(key=>words.includes(key))
+    ??(words.some(word=>["alien","extraterrestrial","extraterrestrials","ufo","ufos"].includes(word))?"aliens":null);
+  const rawTerms=concept==="aliens"?[]:words.filter(term=>term.length>2);
   const terms=[...new Set([...(concept?conceptVocabulary[concept].terms:[]),...rawTerms])].slice(0,20);
   return{
     normalized,
