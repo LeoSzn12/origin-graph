@@ -11,7 +11,7 @@ export function proxy(request: NextRequest): NextResponse {
   const isAdminPage = request.nextUrl.pathname.startsWith("/admin") || request.nextUrl.pathname.startsWith("/api/admin");
   const protectedApiRead = ["/api/admin", "/api/sources", "/api/review", "/api/hypotheses"].some((prefix) => request.nextUrl.pathname.startsWith(prefix));
   const publicApiRead = request.nextUrl.pathname.startsWith("/api/") && request.method === "GET" && !protectedApiRead;
-  if ((!isAdminPage && publicApiRead) || request.nextUrl.pathname === "/api/ask") return NextResponse.next();
+  if ((!isAdminPage && publicApiRead) || request.nextUrl.pathname === "/api/ask" || request.nextUrl.pathname === "/api/sacred-texts/search") return NextResponse.next();
   const expectedUsername = process.env.ADMIN_USERNAME;
   const expectedPassword = process.env.ADMIN_PASSWORD;
   if (!expectedUsername || !expectedPassword) {

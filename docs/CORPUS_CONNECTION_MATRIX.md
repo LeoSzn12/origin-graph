@@ -7,6 +7,9 @@ The registry currently contains 25 providers. “Connected” below means a boun
 | Provider | Domain | Current connection | Publication boundary |
 | --- | --- | --- | --- |
 | World English Bible | Bible | Controlled chapter importer; reviewed pilot loaded | Named public-domain edition only; exact verse locators and hashes retained |
+| Sacred-text corpus manifest | Bible, Tanakh, Quran, Bhagavad Gita, related ancient texts | Full-edition USFM and structured Gutenberg importers; canon-aware search surface | Raw downloads are not publication approval; each edition retains its own integrity and rights policy |
+| JPS TaNaKH 1917 | Jewish Tanakh and Torah | Public-domain USFM archive downloaded; full importer ready | Jewish canon grouping remains distinct from Christian Old Testament grouping |
+| Tanzil Uthmani Quran | Original-language Quran | Verbatim 6,236-ayah file downloaded; integrity parser and importer ready | Text changes prohibited; Tanzil attribution and link required |
 | Project Gutenberg | Public-domain editions | OPDS discovery plus controlled line-range importer; reviewed pilot loaded | Gutenberg US status is not a global rights guarantee; edition notice retained |
 | Wikipedia | Reference summaries | Live bounded reference search | Reference/discovery only; not treated as primary evidence |
 | Wikisource | Public-source editions | Live bounded MediaWiki search | Review edition, transcription status, and license before promotion |

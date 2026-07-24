@@ -1,0 +1,113 @@
+{
+  "manifest_version": 1,
+  "policy": {
+    "existing_app": "preserve",
+    "default_view": "all-canons-with-visible-labels",
+    "original_and_translation_are_distinct": true,
+    "commentary_is_never_presented_as_canonical_text": true,
+    "similarity_grades": [
+      "direct_textual_relationship",
+      "shared_inherited_narrative",
+      "strong_thematic_parallel",
+      "general_motif",
+      "speculative_interpretation"
+    ]
+  },
+  "editions": [
+    {
+      "key": "web-protestant-2025",
+      "text": "christian-bible",
+      "label": "World English Bible, Protestant Edition",
+      "language": "en",
+      "source_kind": "translation",
+      "source_url": "https://ebible.org/details.php?id=engwebp",
+      "download_url": "https://ebible.org/Scriptures/engwebp_usfm.zip",
+      "license_scope": "public_domain",
+      "integrity": "Do not label modified wording as the World English Bible.",
+      "import_status": "approved"
+    },
+    {
+      "key": "web-catholic-2025",
+      "text": "christian-bible",
+      "label": "World English Bible, Catholic Edition",
+      "language": "en",
+      "source_kind": "translation",
+      "source_url": "https://ebible.org/eng-web-c/",
+      "download_url": "https://ebible.org/Scriptures/eng-web-c_usfm.zip",
+      "license_scope": "public_domain",
+      "integrity": "Do not label modified wording as the World English Bible.",
+      "import_status": "approved"
+    },
+    {
+      "key": "jps-tanakh-1917",
+      "text": "tanakh",
+      "label": "JPS TaNaKH 1917",
+      "language": "en",
+      "source_kind": "translation",
+      "source_url": "https://ebible.org/details.php?id=engjps",
+      "download_url": "https://ebible.org/Scriptures/engjps_usfm.zip",
+      "license_scope": "public_domain",
+      "integrity": "Retain edition and Jewish Publication Society attribution.",
+      "import_status": "approved"
+    },
+    {
+      "key": "quran-tanzil-uthmani",
+      "text": "quran",
+      "label": "Tanzil Quran Text, Uthmani",
+      "language": "ar",
+      "source_kind": "original_language",
+      "source_url": "https://tanzil.net/docs/download",
+      "download_url": "https://tanzil.net/pub/download/index.php?quranType=uthmani&outType=txt-2&agree=true&marks=true&sajdah=true&tatweel=true",
+      "license_scope": "attribution",
+      "integrity": "Arabic text must remain verbatim; Tanzil notice and link must accompany redistribution.",
+      "import_status": "approved"
+    },
+    {
+      "key": "quran-rodwell-1909",
+      "text": "quran",
+      "label": "Rodwell English Quran",
+      "language": "en",
+      "source_kind": "translation",
+      "source_url": "https://www.gutenberg.org/ebooks/2800",
+      "download_url": "https://www.gutenberg.org/cache/epub/2800/pg2800.txt",
+      "license_scope": "public_domain",
+      "integrity": "Historical translation; retain translator and edition warnings.",
+      "import_status": "approved"
+    },
+    {
+      "key": "gita-arnold-1885",
+      "text": "bhagavad-gita",
+      "label": "The Song Celestial, Edwin Arnold",
+      "language": "en",
+      "source_kind": "translation",
+      "source_url": "https://www.gutenberg.org/ebooks/2388",
+      "download_url": "https://www.gutenberg.org/cache/epub/2388/pg2388.txt",
+      "license_scope": "public_domain",
+      "integrity": "Historical poetic translation; omissions and translator notes must remain visible.",
+      "import_status": "approved"
+    },
+    {
+      "key": "enoch-charles-1917",
+      "text": "related-ancient",
+      "label": "1 Enoch, R. H. Charles translation",
+      "language": "en",
+      "source_kind": "translation",
+      "source_url": "https://www.gutenberg.org/ebooks/77935",
+      "download_url": "https://www.gutenberg.org/cache/epub/77935/pg77935.txt",
+      "license_scope": "public_domain",
+      "integrity": "Identify as 1 Enoch and Ethiopian Orthodox canonical; related/noncanonical in other selected communities.",
+      "import_status": "approved"
+    },
+    {
+      "key": "dead-sea-scrolls",
+      "text": "related-ancient",
+      "label": "Dead Sea Scrolls",
+      "language": "he,arc,grc",
+      "source_kind": "manuscript",
+      "source_url": "https://www.deadseascrolls.org.il/",
+      "license_scope": "restricted",
+      "integrity": "A manuscript collection, not one book; ingest only rights-cleared transcriptions and preserve fragment/damage metadata.",
+      "import_status": "metadata-only"
+    }
+  ]
+}

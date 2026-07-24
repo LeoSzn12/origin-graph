@@ -10,6 +10,7 @@ test-results/
 *.tsbuildinfo
 .DS_Store
 /storage/
+/corpus/sacred-texts/downloads/
 artifacts/backups/
 .gstack/
 .playwright-cli/

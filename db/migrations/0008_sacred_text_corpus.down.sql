@@ -1,0 +1,17 @@
+DROP INDEX IF EXISTS sacred_parallel_passages_passage_idx;
+DROP INDEX IF EXISTS passage_motifs_motif_idx;
+DROP INDEX IF EXISTS passage_sacred_reference_lookup_idx;
+DROP INDEX IF EXISTS sacred_edition_profiles_text_idx;
+DROP INDEX IF EXISTS sacred_canon_books_book_idx;
+DROP INDEX IF EXISTS sacred_text_books_order_idx;
+DROP TABLE IF EXISTS sacred_parallel_passages;
+DROP TABLE IF EXISTS sacred_parallel_sets;
+DROP TABLE IF EXISTS passage_motifs;
+DROP TABLE IF EXISTS passage_sacred_references;
+DROP TABLE IF EXISTS sacred_edition_profiles;
+DROP TABLE IF EXISTS sacred_canon_books;
+DROP TABLE IF EXISTS sacred_text_books;
+DROP TABLE IF EXISTS sacred_canons;
+DROP TABLE IF EXISTS sacred_books;
+DROP TABLE IF EXISTS sacred_texts;
+DROP TABLE IF EXISTS sacred_traditions;

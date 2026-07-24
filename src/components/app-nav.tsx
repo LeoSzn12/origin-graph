@@ -5,7 +5,7 @@ import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 
 const primaryLinks = [
-  ["/", "Explore", "Explore"], ["/ask", "Ask evidence", "Ask"], ["/case-files", "Research files", "Research"],
+  ["/", "Explore", "Explore"], ["/sacred-texts", "Sacred texts", "Texts"], ["/ask", "Ask evidence", "Ask"], ["/case-files", "Research files", "Research"],
   ["/hypotheses", "Hypotheses", "Hypotheses"], ["/sources", "Sources", "Sources"], ["/game", "Evidence game", "Play"]
 ] as const;
 
